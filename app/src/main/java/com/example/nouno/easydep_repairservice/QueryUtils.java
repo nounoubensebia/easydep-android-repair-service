@@ -29,6 +29,7 @@ public class QueryUtils {
 
     public static final String SEND_REQUEST_URL = "http://192.168.1.2/EasyDep/send_request.php";
     public static final String GET_REQUESTS =  "get_repair_service_requests";
+    public static final String GET_QUEUE_ELEMENTS = "get_repair_service_queue_elements";
 
 
     public static String makeHttpPostRequest (String urlString,Map<String,String> parameters) throws ConnectionProblemException

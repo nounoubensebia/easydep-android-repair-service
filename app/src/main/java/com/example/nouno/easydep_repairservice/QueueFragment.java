@@ -1,11 +1,24 @@
 package com.example.nouno.easydep_repairservice;
 
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import com.example.nouno.easydep_repairservice.Data.QueueElement;
+import com.example.nouno.easydep_repairservice.Data.RepairService;
+import com.example.nouno.easydep_repairservice.ListAdapters.QueueElementAdapter;
+import com.example.nouno.easydep_repairservice.exceptions.ConnectionProblemException;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 /**
@@ -14,6 +27,11 @@ import android.view.ViewGroup;
 public class QueueFragment extends Fragment {
 
 
+    private ArrayList<QueueElement> queueElements;
+    private View view;
+    private ListView listView;
+    private RepairService repairService;
+    private SwipeRefreshLayout swipeRefreshLayout;
     public QueueFragment() {
         // Required empty public constructor
     }
@@ -23,7 +41,71 @@ public class QueueFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_queue, container, false);
+        view= inflater.inflate(R.layout.fragment_queue, container, false);
+        swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.swhipe_refresh_layout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1, R.color.refresh_progress_2, R.color.refresh_progress_3);
+        listView = (ListView)view.findViewById(R.id.list);
+        getRepairService();
+        getQueueElements();
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getQueueElements();
+            }
+        });
+        return view;
+    }
+
+    private void getRepairService ()
+    {
+        repairService = new RepairService(3,"Bensebia","Noureddine");
+    }
+
+    private void getQueueElements ()
+    {
+        LinkedHashMap<String,String> map = new LinkedHashMap<>();
+        map.put("repair_service_id",repairService.getId()+"");
+        map.put("action",QueryUtils.GET_QUEUE_ELEMENTS);
+        GetQueueElementsTask getQueueElementsTask = new GetQueueElementsTask();
+        getQueueElementsTask.execute(map);
+    }
+
+    private void populateQueueElementList (View view,ArrayList<QueueElement> queueElements)
+    {
+        ListView listView = (ListView)view.findViewById(R.id.list);
+        QueueElementAdapter queueElementAdapter = new QueueElementAdapter(getContext(),queueElements);
+        listView.setAdapter(queueElementAdapter);
+        listView.setDividerHeight(0);
+    }
+
+    private class GetQueueElementsTask extends AsyncTask<Map<String,String>,Void,String>
+    {
+
+        @Override
+        protected void onPreExecute() {
+            listView.setVisibility(View.GONE);
+            swipeRefreshLayout.setRefreshing(true);
+        }
+
+        @Override
+        protected String doInBackground(Map<String, String>... params) {
+            String response = null;
+            try {
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.SEND_REQUEST_URL,params[0]);
+            } catch (ConnectionProblemException e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+            swipeRefreshLayout.setRefreshing(false);
+            queueElements = QueueElement.parseQueueJson(s);
+            populateQueueElementList(getView(),queueElements);
+            listView.setVisibility(View.VISIBLE);
+        }
     }
 
 

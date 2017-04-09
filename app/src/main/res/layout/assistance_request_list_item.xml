@@ -3,6 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
+
         android:id="@+id/name_text"
         android:layout_marginTop="8dp"
         android:text="Bensebia Noureddine"

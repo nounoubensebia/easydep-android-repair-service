@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/position_text"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:textSize="64sp"
+        android:padding="0dp"
+        android:textColor="@color/colorPrimary"
+        android:text="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/name_text"
+            android:layout_marginTop="16dp"
+            android:textSize="16sp"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@android:color/background_dark"
+            android:layout_width="wrap_content"
+            android:text="Bensebia Noureddine"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/location_text"
+            android:layout_width="wrap_content"
+            android:text="Cité Zerhouni Mokhtar"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/duration_text"
+            android:layout_width="wrap_content"
+            android:text="a 10 minutes de route"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    </LinearLayout>
+        <View
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:background="#f1f1f1"
+            android:layout_height="1dp"/>
+
+
+</LinearLayout>

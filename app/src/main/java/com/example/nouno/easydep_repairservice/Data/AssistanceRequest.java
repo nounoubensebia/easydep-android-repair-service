@@ -30,7 +30,23 @@ public class AssistanceRequest {
         toDestination = null;
     }
 
+    public AssistanceRequest(long id, CarOwner carOwner, Position departure, Path toDeparture, Position destination, Path toDestination, long time) {
+        this.id = id;
+        this.carOwner = carOwner;
+        this.departure = departure;
+        this.toDeparture = toDeparture;
+        this.destination = destination;
+        this.toDestination = toDestination;
+        this.time = time;
+    }
 
+    public long getId() {
+        return id;
+    }
+
+    public long getTime() {
+        return time;
+    }
 
     public CarOwner getCarOwner() {
         return carOwner;

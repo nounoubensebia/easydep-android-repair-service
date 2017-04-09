@@ -31,6 +31,7 @@ public class RequestsListFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private View view;
     private RepairService repairService;
+    private ListView listView;
     public RequestsListFragment() {
         // Required empty public constructor
     }
@@ -43,6 +44,7 @@ public class RequestsListFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_requests_list, container, false);
         swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe_refrech_layout);
         getRepairService();
+        listView = (ListView)view.findViewById(R.id.list);
         getAssistanceRequests();
         swipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1, R.color.refresh_progress_2, R.color.refresh_progress_3);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -51,6 +53,7 @@ public class RequestsListFragment extends Fragment {
                 getAssistanceRequests();
             }
         });
+
         return view;
     }
 
@@ -83,6 +86,7 @@ public class RequestsListFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             swipeRefreshLayout.setRefreshing(true);
+            listView.setVisibility(View.GONE);
         }
 
         @Override
@@ -98,9 +102,11 @@ public class RequestsListFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String s) {
+
             swipeRefreshLayout.setRefreshing(false);
             assistanceRequests = AssistanceRequest.parseJson(s);
             populateAssistanceRequestsList(view,assistanceRequests);
+            listView.setVisibility(View.VISIBLE);
         }
     }
 
