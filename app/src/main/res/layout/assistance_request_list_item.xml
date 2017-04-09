@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/name_text"
+        android:layout_marginTop="8dp"
+        android:text="Bensebia Noureddine"
+        android:textSize="16sp"
+        android:textColor="@android:color/background_dark"
+        android:fontFamily="sans-serif-light"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:id="@+id/toDepartureDistanceText"
+        android:layout_marginLeft="16dp"
+        android:textSize="12sp"
+        android:text="a 13 minutes de route"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/departure_text"
+        android:layout_marginLeft="16dp"
+        android:layout_width="wrap_content"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:layout_marginTop="8dp"
+        android:drawablePadding="8dp"
+        android:drawableLeft="@drawable/ic_my_location_black_24dp"
+        android:text="Cité Zehouni Mokhtar, El Mohammadia"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:id="@+id/destination_layout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <View
+            android:layout_marginLeft="28dp"
+            android:background="#bdbdbd"
+            android:layout_width="0.5dp"
+            android:layout_height="32dp"/>
+        <TextView
+            android:id="@+id/path_text"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="20dp"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:drawablePadding="4dp"
+            android:text="12min (5km)"
+            android:layout_height="wrap_content" />
+   </LinearLayout>
+
+    <TextView
+        android:id="@+id/destination_text"
+        android:layout_marginLeft="16dp"
+        android:layout_width="wrap_content"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:drawablePadding="8dp"
+        android:drawableLeft="@drawable/ic_location_on_black_24dp"
+        android:text="Chéraga, Alger"
+        android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:background="#F1F1F1"
+        android:layout_height="1dp"/>
+
+
+
+
+</LinearLayout>
