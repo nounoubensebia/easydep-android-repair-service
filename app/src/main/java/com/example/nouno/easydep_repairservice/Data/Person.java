@@ -30,4 +30,12 @@ public class Person {
     {
         return firstname+" "+lastname;
     }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
 }

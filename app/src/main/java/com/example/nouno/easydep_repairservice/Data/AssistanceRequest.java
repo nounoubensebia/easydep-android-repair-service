@@ -40,6 +40,17 @@ public class AssistanceRequest {
         this.time = time;
     }
 
+    public AssistanceRequest(long id, CarOwner carOwner, Position departure, Position destination, long time) {
+        this.id = id;
+        this.carOwner = carOwner;
+        this.departure = departure;
+        this.destination = destination;
+        this.time = time;
+    }
+
+    public AssistanceRequest() {
+    }
+
     public long getId() {
         return id;
     }
@@ -74,6 +85,14 @@ public class AssistanceRequest {
 
     public void setToDestination(Path toDestination) {
         this.toDestination = toDestination;
+    }
+
+    public void setDeparture(Position departure) {
+        this.departure = departure;
+    }
+
+    public void setCarOwner(CarOwner carOwner) {
+        this.carOwner = carOwner;
     }
 
     public String getDepartureDurationString ()

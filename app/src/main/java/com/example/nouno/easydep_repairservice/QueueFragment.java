@@ -1,6 +1,7 @@
 package com.example.nouno.easydep_repairservice;
 
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.nouno.easydep_repairservice.Data.QueueElement;
@@ -57,8 +57,19 @@ public class QueueFragment extends Fragment {
                 getQueueElements();
             }
         });
-
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startCreateRequestActivity();
+            }
+        });
         return view;
+    }
+
+    private void startCreateRequestActivity()
+    {
+        Intent i = new Intent(getContext(),CreateAssistanceRequestActivity.class);
+        startActivity(i);
     }
 
     private void getRepairService ()

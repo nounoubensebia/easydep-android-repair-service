@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:label="EasyDep">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,6 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".CreateAssistanceRequestActivity" android:label="Nouvelle Demande" android:theme="@style/RequestTheme"  />
+        <activity android:name=".LocationSearchActivity" android:theme="@style/SignupTheme" android:label="Rechercher position"/>
+        <activity android:name=".HeavyAssistanceRequestActivity" android:theme="@style/RequestTheme"></activity>
     </application>
 
 </manifest>

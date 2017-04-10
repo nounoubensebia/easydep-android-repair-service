@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".CreateAssistanceRequestActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Informations automobiliste"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp" />
+        <LinearLayout
+            android:id="@+id/firstnameLayout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:text="Nom"
+            android:textColor="@android:color/background_dark"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/firstnameText"
+            android:layout_marginLeft="16dp"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:text="Inconnu"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:background="#F1F1F1"
+            android:layout_height="1dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/lastnameLayout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:text="Prénom"
+            android:textColor="@android:color/background_dark"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/lastnameText"
+            android:layout_marginLeft="16dp"
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp"
+            android:layout_width="wrap_content"
+            android:text="Inconnu"
+            android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+
+            android:text="Véhicule"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp" />
+
+        <RelativeLayout
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <Switch
+                android:id="@+id/heavy_vehicule_switcher"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:textColor="@android:color/background_dark"
+                android:layout_marginLeft="16dp"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:text="Véhicule lourd"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/heavy_vehicule_switcher"
+                android:layout_alignBottom="@id/heavy_vehicule_switcher"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="16dp" />
+        </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/dimensionsLayout"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/dimensionsTitleText"
+                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:textSize="16sp"
+                android:text="Dimensions"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/dimensionsText"
+                android:textSize="16sp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:text="Non défini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <TextView
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:textSize="16sp"
+            android:text="Etat véhicule"
+            android:layout_height="wrap_content" />
+        <RelativeLayout
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <Switch
+                android:id="@+id/vehicule_can_move_switcher"
+                android:layout_marginRight="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="16dp" />
+            <TextView
+                android:textColor="@android:color/background_dark"
+                android:layout_marginLeft="16dp"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:text="En état de marche"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/vehicule_can_move_switcher"
+                android:layout_alignBottom="@id/vehicule_can_move_switcher"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="16dp" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_marginTop="16dp"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+            android:text="Localisation"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:id="@+id/positionLayout"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="16dp"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:text="Postion"
+                android:textColor="@android:color/background_dark"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/positionText"
+                android:layout_marginLeft="16dp"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:text="El Mohamadia Alger"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:background="#F1F1F1"
+                android:layout_height="1dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/destinationLayout"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="16dp"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:text="Destination"
+                android:textColor="@android:color/background_dark"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/destinationText"
+                android:layout_marginLeft="16dp"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:text="Non spécifiée"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:background="#F1F1F1"
+                android:layout_height="1dp"/>
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+    </ScrollView>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/go_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:layout_margin="16dp"
+        app:backgroundTint="@color/colorPrimary"
+        app:fabSize="normal"
+        android:src= "@drawable/ic_add_24dp"
+        app:rippleColor="@android:color/white"
+         />
+
+</android.support.design.widget.CoordinatorLayout>
