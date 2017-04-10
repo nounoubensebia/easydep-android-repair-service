@@ -8,6 +8,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -32,6 +34,7 @@ public class QueueFragment extends Fragment {
     private ListView listView;
     private RepairService repairService;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private View fab;
     public QueueFragment() {
         // Required empty public constructor
     }
@@ -45,6 +48,7 @@ public class QueueFragment extends Fragment {
         swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.swhipe_refresh_layout);
         swipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1, R.color.refresh_progress_2, R.color.refresh_progress_3);
         listView = (ListView)view.findViewById(R.id.list);
+        fab = view.findViewById(R.id.fab);
         getRepairService();
         getQueueElements();
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -53,6 +57,7 @@ public class QueueFragment extends Fragment {
                 getQueueElements();
             }
         });
+
         return view;
     }
 
@@ -72,17 +77,73 @@ public class QueueFragment extends Fragment {
 
     private void populateQueueElementList (View view,ArrayList<QueueElement> queueElements)
     {
+        QueueElement queueElement = queueElements.get(0);
+        queueElement.setPosition(0);
+        queueElement = queueElements.get(1);
+        queueElement.setPosition(1);
         ListView listView = (ListView)view.findViewById(R.id.list);
         QueueElementAdapter queueElementAdapter = new QueueElementAdapter(getContext(),queueElements);
         listView.setAdapter(queueElementAdapter);
         listView.setDividerHeight(0);
     }
 
+    public void enter(final View view) {
+        view.setVisibility(View.VISIBLE);
+        final Animation fabEnter = AnimationUtils.loadAnimation(view.getContext(), R.anim.scale_enter);
+        fabEnter.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                view.setVisibility(View.VISIBLE);
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        view.startAnimation(fabEnter);
+
+    }
+
+
+    public void exit(final View view) {
+        final Animation fabExit = AnimationUtils.loadAnimation(view.getContext(), R.anim.scale_exit);
+        fabExit.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                view.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        view.startAnimation(fabExit);
+    }
+
+
+
+
+
     private class GetQueueElementsTask extends AsyncTask<Map<String,String>,Void,String>
     {
 
         @Override
         protected void onPreExecute() {
+            exit(fab);
             listView.setVisibility(View.GONE);
             swipeRefreshLayout.setRefreshing(true);
         }
@@ -101,6 +162,7 @@ public class QueueFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
 
+            enter(fab);
             swipeRefreshLayout.setRefreshing(false);
             queueElements = QueueElement.parseQueueJson(s);
             populateQueueElementList(getView(),queueElements);

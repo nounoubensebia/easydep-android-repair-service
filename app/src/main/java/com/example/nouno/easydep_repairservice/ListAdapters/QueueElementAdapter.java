@@ -38,15 +38,23 @@ public class QueueElementAdapter extends ArrayAdapter<QueueElement> {
         TextView locationText = (TextView)item.findViewById(R.id.location_text);
         TextView durationText = (TextView)item.findViewById(R.id.duration_text);
         positionText.setText(queueElement.getPosition()+"");
+        TextView interventionText = (TextView)item.findViewById(R.id.intervention_text);
         switch (queueElement.getPosition())
         {
+            case 0 : positionText.setVisibility(View.GONE);
+                interventionText.setVisibility(View.VISIBLE);
+                break;
             case 1:positionText.setTextColor(getContext().getResources().getColor(R.color.greenPrimary));
+                interventionText.setVisibility(View.GONE);positionText.setVisibility(View.VISIBLE);
                 break;
             case 2:positionText.setTextColor(getContext().getResources().getColor(R.color.orangePrimary));
+                interventionText.setVisibility(View.GONE);positionText.setVisibility(View.VISIBLE);
                 break;
             case 3:positionText.setTextColor(getContext().getResources().getColor(android.R.color.holo_red_light));
+                interventionText.setVisibility(View.GONE);positionText.setVisibility(View.VISIBLE);
                 break;
             case 4:positionText.setTextColor(getContext().getResources().getColor(android.R.color.holo_red_dark));
+                interventionText.setVisibility(View.GONE);positionText.setVisibility(View.VISIBLE);
                 break;
         }
         nameText.setText(queueElement.getCarOwner().getFullName());
