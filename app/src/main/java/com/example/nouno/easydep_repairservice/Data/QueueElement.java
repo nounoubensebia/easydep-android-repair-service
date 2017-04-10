@@ -38,7 +38,27 @@ public class QueueElement extends AssistanceRequest {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        sortByPosition(queueElements);
         return queueElements;
+    }
+
+    public static void sortByPosition (ArrayList<QueueElement> queueElements)
+    {
+        for (int i=0;i<queueElements.size();i++)
+        {
+
+            for (int j=i+1;j<queueElements.size();j++)
+            {
+
+                if (queueElements.get(i).position>queueElements.get(j).position)
+                {
+                    QueueElement queueElement1 = queueElements.get(i);
+                    QueueElement queueElement2 = queueElements.get(j);
+                    queueElements.set(i,queueElement2);
+                    queueElements.set(j,queueElement1);
+                }
+            }
+        }
     }
 
     public int getPosition() {

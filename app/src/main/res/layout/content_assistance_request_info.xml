@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.nouno.easydep_repairservice.AssistanceRequestInfoActivity"
+    >
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <TextView
+                android:paddingTop="8dp"
+                android:drawableTop="@drawable/ic_estimate_24dp"
+                android:drawablePadding="8dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="center"
+                android:fontFamily="sans-serif-light"
+                android:layout_weight="1"
+                android:text="Ecrire devis"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:paddingTop="8dp"
+                android:drawableTop="@drawable/ic_cancel_24dp"
+                android:drawablePadding="8dp"
+                android:textColor="@android:color/holo_red_light"
+                android:fontFamily="sans-serif-light"
+                android:layout_weight="1"
+                android:text="Annuler Demande"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <TextView
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:drawablePadding="8dp"
+            android:drawableLeft="@drawable/ic_my_location_black_24dp"
+            android:layout_marginTop="16dp"
+            android:text="El Mohamadia Alger"
+            android:textColor="@android:color/background_dark"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:drawablePadding="8dp"
+            android:drawableLeft="@drawable/ic_access_time_24dp"
+            android:layout_marginTop="16dp"
+            android:text="a 12 minutes de route"
+            android:textColor="@android:color/background_dark"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    <TextView
+        android:fontFamily="sans-serif-light"
+        android:id="@+id/resume_avis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Véhicule"
+        android:textColor="@android:color/background_dark"
+        android:textSize="16sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="#F1F1F1"
+            tools:visibility="visible" />
+    <LinearLayout
+        android:id="@+id/resume_avis_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+
+            <TextView
+                android:drawableTop="@drawable/ic_directions_car_black_24dp"
+                android:drawablePadding="8dp"
+                android:id="@+id/rating_text"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Véhicule léger"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp" />
+
+
+
+
+            <TextView
+                android:drawablePadding="8dp"
+                android:drawableTop="@drawable/ic_build_black_24dp"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:id="@+id/rating_number"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="En état de marche"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="16sp" />
+       </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="#F1F1F1"
+            tools:visibility="visible" />
+        <TextView
+            android:layout_marginTop="8dp"
+
+            android:fontFamily="sans-serif-light"
+            android:layout_marginLeft="16dp"
+            android:text="Trajet"
+            android:textSize="16sp"
+            android:textColor="@android:color/background_dark"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="#F1F1F1"
+            tools:visibility="visible" />
+        <TextView
+
+            android:textColor="@android:color/background_dark"
+            android:fontFamily="sans-serif-light"
+            android:id="@+id/departure_text"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_marginTop="8dp"
+            android:drawablePadding="8dp"
+            android:drawableLeft="@drawable/ic_my_location_black_24dp"
+            android:text="Cité Zehouni Mokhtar, El Mohammadia"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:id="@+id/destination_layout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <View
+                    android:layout_marginLeft="28dp"
+                    android:background="#bdbdbd"
+                    android:layout_width="0.5dp"
+                    android:layout_height="64dp"/>
+                <TextView
+                    android:id="@+id/path_text"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:gravity="center"
+                    android:drawablePadding="4dp"
+                    android:text="12min (5km)"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <TextView
+                android:textColor="@android:color/background_dark"
+                android:fontFamily="sans-serif-light"
+                android:id="@+id/destination_text"
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:textSize="16sp"
+                android:gravity="center"
+
+                android:drawablePadding="8dp"
+                android:drawableLeft="@drawable/ic_location_on_black_24dp"
+                android:text="Chéraga, Alger"
+                android:layout_height="wrap_content" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="#F1F1F1"
+                tools:visibility="visible" />
+            <TextView
+                android:textColor="@android:color/background_dark"
+                android:fontFamily="sans-serif-light"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:drawableLeft="@drawable/ic_map_black_24dp"
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center_horizontal"
+                android:text="Itinéraire"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:background="#F1F1F1"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</android.support.v4.widget.NestedScrollView>

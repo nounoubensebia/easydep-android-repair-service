@@ -20,6 +20,16 @@ public class AssistanceRequest {
     private Position destination;
     private Path toDestination;
     private long time;
+    private boolean heavy;
+    private boolean vehiculeCanMove;
+    public static final int MIN_LENGTH = 5;
+    public static final int MAX_LENGTH = 15;
+    public static final int MIN_WEIGHT = 6;
+    public static final int MAX_WEIGHT = 12;
+    public static final int DONT_KNOW = -1;
+    public static final int NOT_HEAVY = -2;
+    private float length;
+    private float weight;
     public AssistanceRequest(long id,CarOwner carOwner, Position departure, Path toDeparture,long time) {
         this.id = id;
         this.carOwner = carOwner;
@@ -47,6 +57,8 @@ public class AssistanceRequest {
         this.destination = destination;
         this.time = time;
     }
+
+
 
     public AssistanceRequest() {
     }

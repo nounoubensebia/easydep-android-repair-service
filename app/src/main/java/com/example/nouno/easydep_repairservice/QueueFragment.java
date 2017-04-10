@@ -88,10 +88,10 @@ public class QueueFragment extends Fragment {
 
     private void populateQueueElementList (View view,ArrayList<QueueElement> queueElements)
     {
-        QueueElement queueElement = queueElements.get(0);
-        queueElement.setPosition(0);
-        queueElement = queueElements.get(1);
-        queueElement.setPosition(1);
+        //QueueElement queueElement = queueElements.get(0);
+        //queueElement.setPosition(0);
+        //queueElement = queueElements.get(1);
+        //queueElement.setPosition(1);
         ListView listView = (ListView)view.findViewById(R.id.list);
         QueueElementAdapter queueElementAdapter = new QueueElementAdapter(getContext(),queueElements);
         listView.setAdapter(queueElementAdapter);
