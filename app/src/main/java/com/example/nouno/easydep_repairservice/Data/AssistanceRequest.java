@@ -1,5 +1,7 @@
 package com.example.nouno.easydep_repairservice.Data;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,6 +24,7 @@ public class AssistanceRequest {
     private long time;
     private boolean heavy;
     private boolean vehiculeCanMove;
+    private int flag;
     public static final int MIN_LENGTH = 5;
     public static final int MAX_LENGTH = 15;
     public static final int MIN_WEIGHT = 6;
@@ -30,6 +33,10 @@ public class AssistanceRequest {
     public static final int NOT_HEAVY = -2;
     private float length;
     private float weight;
+    public static final int FLAG_ESTIMATE_REQUEST = 0;
+    public static final int FLAG_IN_QUEUE = 1;
+    public static final int FLAG_INTERVENTION = 2;
+
     public AssistanceRequest(long id,CarOwner carOwner, Position departure, Path toDeparture,long time) {
         this.id = id;
         this.carOwner = carOwner;
@@ -41,6 +48,7 @@ public class AssistanceRequest {
     }
 
     public AssistanceRequest(long id, CarOwner carOwner, Position departure, Path toDeparture, Position destination, Path toDestination, long time) {
+        flag = FLAG_ESTIMATE_REQUEST;
         this.id = id;
         this.carOwner = carOwner;
         this.departure = departure;
@@ -51,6 +59,7 @@ public class AssistanceRequest {
     }
 
     public AssistanceRequest(long id, CarOwner carOwner, Position departure, Position destination, long time) {
+        flag = FLAG_ESTIMATE_REQUEST;
         this.id = id;
         this.carOwner = carOwner;
         this.departure = departure;
@@ -58,9 +67,36 @@ public class AssistanceRequest {
         this.time = time;
     }
 
-
+    public AssistanceRequest(long id, CarOwner carOwner, Position departure, Path toDeparture, Position destination, Path toDestination, long time, boolean heavy, boolean vehiculeCanMove, float length, float weight) {
+        this.id = id;
+        this.carOwner = carOwner;
+        this.departure = departure;
+        this.toDeparture = toDeparture;
+        this.destination = destination;
+        this.toDestination = toDestination;
+        this.time = time;
+        this.heavy = heavy;
+        this.vehiculeCanMove = vehiculeCanMove;
+        this.length = length;
+        this.weight = weight;
+        flag = FLAG_ESTIMATE_REQUEST;
+    }
 
     public AssistanceRequest() {
+        flag = FLAG_ESTIMATE_REQUEST;
+        heavy =false;
+        vehiculeCanMove = false;
+        length = NOT_HEAVY;
+        weight = NOT_HEAVY;
+        carOwner = new CarOwner(-1,CarOwner.ANONYMOUS,CarOwner.ANONYMOUS);
+    }
+
+    public int getFlag() {
+        return flag;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
     }
 
     public long getId() {
@@ -131,6 +167,24 @@ public class AssistanceRequest {
         }
         return s;
     }
+
+    public String getDepartureDistanceString()
+    {
+        double distanceInKm = toDeparture.getDistance()/1000;
+        String s = "";
+        NumberFormat nf = new DecimalFormat("0.#");
+        if (distanceInKm <10)
+        {
+            s= nf.format(distanceInKm)+"KM";
+        }
+        else
+        {
+            int dist = (int)distanceInKm;
+            s=dist+"KM";
+        }
+        return s;
+    }
+
     public static ArrayList<AssistanceRequest> parseJson (String json)
     {
         ArrayList<AssistanceRequest> assistanceRequests = new ArrayList<>();
@@ -170,6 +224,13 @@ public class AssistanceRequest {
                     assistanceRequest.setDestination(destination);
                     assistanceRequest.setToDestination(toDestinaion);
                 }
+                boolean heavy = jsonObject.getBoolean("heavy");
+                assistanceRequest.setHeavy(heavy);
+                if (heavy)
+                {
+                    assistanceRequest.setLength((float)jsonObject.getDouble("length"));
+                    assistanceRequest.setWeight((float)jsonObject.getDouble("weight"));
+                }
                 assistanceRequests.add(assistanceRequest);
             }
 
@@ -177,5 +238,99 @@ public class AssistanceRequest {
             e.printStackTrace();
         }
         return assistanceRequests;
+    }
+
+    public boolean isHeavy() {
+        return heavy;
+    }
+
+    public boolean isVehiculeCanMove() {
+        return vehiculeCanMove;
+    }
+
+    public float getLength() {
+        return length;
+    }
+
+    public float getWeight() {
+        return weight;
+    }
+
+    public void setHeavy(boolean heavy) {
+        this.heavy = heavy;
+    }
+
+    public void setVehiculeCanMove(boolean vehiculeCanMove) {
+        this.vehiculeCanMove = vehiculeCanMove;
+    }
+
+    public void setLength(float length) {
+        this.length = length;
+    }
+
+    public void setWeight(float weight) {
+        this.weight = weight;
+    }
+
+    public String getLengthString ()
+    {
+        if (length==DONT_KNOW)
+        {
+            return "Non spécifiée";
+        }
+        else
+        {
+            return length+" Métres";
+        }
+    }
+
+    public String getWeightString ()
+    {
+        if (weight==DONT_KNOW)
+        {
+            return "Non spécifié";
+        }
+        else
+        {
+            return weight+" Tonnes";
+        }
+    }
+
+    public String getDimensionsString () {
+        if (weight==DONT_KNOW&&length==DONT_KNOW)
+        {
+            return "Non spécifiés";
+        }
+
+        if (weight==NOT_HEAVY&&length==NOT_HEAVY)
+            return "Non défini";
+        return "Longeur : "+getLengthString()+", "+"Poids : "+getWeightString();
+    }
+    public String getDepartureString()
+    {
+        if (getDeparture()==null)
+        {
+            return "Non spécifiée";
+        }
+        else
+        {
+            return getDeparture().getLocationName();
+        }
+    }
+    public String getDestinationString()
+    {
+        if (getDestination()==null)
+        {
+            return "Non spécifiée";
+        }
+        else
+        {
+            return getDestination().getLocationName();
+        }
+    }
+    public String toJson ()
+    {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 }

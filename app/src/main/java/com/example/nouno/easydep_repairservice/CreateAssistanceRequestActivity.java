@@ -1,27 +1,21 @@
 package com.example.nouno.easydep_repairservice;
 
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.nouno.easydep_repairservice.Data.DetailedAssistanceRequest;
+import com.example.nouno.easydep_repairservice.Data.AssistanceRequest;
 import com.google.gson.Gson;
 
 public class CreateAssistanceRequestActivity extends AppCompatActivity {
-    private DetailedAssistanceRequest assistanceRequest;
+    private AssistanceRequest assistanceRequest;
     private CreateAssistanceRequestActivity createAssistanceRequestActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +32,9 @@ public class CreateAssistanceRequestActivity extends AppCompatActivity {
         if (getIntent().getExtras()!=null&&getIntent().getExtras().containsKey("assistanceRequest"))
         {
         String json = getIntent().getExtras().getString("assistanceRequest");
-        assistanceRequest = gson.fromJson(json,DetailedAssistanceRequest.class);
+        assistanceRequest = gson.fromJson(json,AssistanceRequest.class);
         }
-        else assistanceRequest = new DetailedAssistanceRequest();
+        else assistanceRequest = new AssistanceRequest();
 
     }
 
@@ -88,14 +82,14 @@ public class CreateAssistanceRequestActivity extends AppCompatActivity {
                 if (isChecked)
                 {
                     assistanceRequest.setHeavy(true);
-                    assistanceRequest.setLength(DetailedAssistanceRequest.DONT_KNOW);
-                    assistanceRequest.setWeight(DetailedAssistanceRequest.DONT_KNOW);
+                    assistanceRequest.setLength(AssistanceRequest.DONT_KNOW);
+                    assistanceRequest.setWeight(AssistanceRequest.DONT_KNOW);
                     startHeavyRequestActivity();
                 }
                 else {
                     assistanceRequest.setHeavy(false);
-                    assistanceRequest.setLength(DetailedAssistanceRequest.NOT_HEAVY);
-                    assistanceRequest.setWeight(DetailedAssistanceRequest.NOT_HEAVY);
+                    assistanceRequest.setLength(AssistanceRequest.NOT_HEAVY);
+                    assistanceRequest.setWeight(AssistanceRequest.NOT_HEAVY);
                     dimensionsText.setText(assistanceRequest.getDimensionsString());
                 }
             }

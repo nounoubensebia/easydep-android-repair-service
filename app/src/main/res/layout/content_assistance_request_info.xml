@@ -16,6 +16,7 @@
             android:orientation="horizontal"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/write_estimate_text"
                 android:paddingTop="8dp"
                 android:drawableTop="@drawable/ic_estimate_24dp"
                 android:drawablePadding="8dp"
@@ -27,6 +28,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
             <TextView
+                android:id="@+id/cancel_request_text"
                 android:paddingTop="8dp"
                 android:drawableTop="@drawable/ic_cancel_24dp"
                 android:drawablePadding="8dp"
@@ -37,8 +39,10 @@
                 android:gravity="center"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
+
         </LinearLayout>
         <TextView
+            android:id="@+id/departure_text1"
             android:fontFamily="sans-serif-light"
             android:gravity="center"
             android:drawablePadding="8dp"
@@ -50,6 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
+            android:id="@+id/duration_text"
             android:fontFamily="sans-serif-light"
             android:gravity="center"
             android:drawablePadding="8dp"
@@ -82,17 +87,14 @@
         android:id="@+id/resume_avis_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         android:layout_marginTop="16dp"
         android:orientation="horizontal">
-
-
             <TextView
                 android:drawableTop="@drawable/ic_directions_car_black_24dp"
                 android:drawablePadding="8dp"
-                android:id="@+id/rating_text"
+                android:id="@+id/type_text"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -101,16 +103,12 @@
                 android:fontFamily="sans-serif-light"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp" />
-
-
-
-
             <TextView
                 android:drawablePadding="8dp"
                 android:drawableTop="@drawable/ic_build_black_24dp"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:id="@+id/rating_number"
+                android:id="@+id/vehicule_can_move_text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -118,6 +116,7 @@
                 android:fontFamily="sans-serif-light"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp" />
+
        </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -125,6 +124,48 @@
             android:layout_marginTop="8dp"
             android:background="#F1F1F1"
             tools:visibility="visible" />
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/heavy_layout"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_marginTop="8dp"
+                android:id="@+id/length_text"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Longeur 20 Métres"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@android:color/background_dark"
+                android:textSize="16sp" />
+            <TextView
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/weight_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="Poids 30 Tonnes"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@android:color/background_dark"
+                android:textSize="16sp" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:background="#F1F1F1"
+            tools:visibility="visible" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:id="@+id/path_layout"
+            android:layout_height="wrap_content">
         <TextView
             android:layout_marginTop="8dp"
 
@@ -145,7 +186,7 @@
 
             android:textColor="@android:color/background_dark"
             android:fontFamily="sans-serif-light"
-            android:id="@+id/departure_text"
+            android:id="@+id/departure_text2"
             android:layout_marginLeft="16dp"
             android:layout_width="wrap_content"
             android:textSize="16sp"
@@ -219,6 +260,7 @@
                 android:layout_marginBottom="16dp"
                 android:background="#F1F1F1"
                 tools:visibility="visible" />
+        </LinearLayout>
 
         </LinearLayout>
 

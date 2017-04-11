@@ -11,8 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.nouno.easydep_repairservice.Data.AssistanceRequest;
 import com.example.nouno.easydep_repairservice.Data.QueueElement;
 import com.example.nouno.easydep_repairservice.Data.RepairService;
 import com.example.nouno.easydep_repairservice.ListAdapters.QueueElementAdapter;
@@ -86,7 +88,7 @@ public class QueueFragment extends Fragment {
         getQueueElementsTask.execute(map);
     }
 
-    private void populateQueueElementList (View view,ArrayList<QueueElement> queueElements)
+    private void populateQueueElementList (View view, final ArrayList<QueueElement> queueElements)
     {
         //QueueElement queueElement = queueElements.get(0);
         //queueElement.setPosition(0);
@@ -96,6 +98,15 @@ public class QueueFragment extends Fragment {
         QueueElementAdapter queueElementAdapter = new QueueElementAdapter(getContext(),queueElements);
         listView.setAdapter(queueElementAdapter);
         listView.setDividerHeight(0);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AssistanceRequest assistanceRequest = queueElements.get(position);
+                Intent i = new Intent(getContext(),AssistanceRequestInfoActivity.class);
+                i.putExtra("assistanceRequest",assistanceRequest.toJson());
+                startActivity(i);
+            }
+        });
     }
 
     public void enter(final View view) {

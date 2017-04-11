@@ -1,6 +1,7 @@
 package com.example.nouno.easydep_repairservice;
 
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.nouno.easydep_repairservice.Data.AssistanceRequest;
@@ -72,12 +74,26 @@ public class RequestsListFragment extends Fragment {
     }
 
 
-    private void populateAssistanceRequestsList (View view,ArrayList<AssistanceRequest> assistanceRequests)
+    private void populateAssistanceRequestsList (View view, final ArrayList<AssistanceRequest> assistanceRequests)
     {
         ListView listView = (ListView) view.findViewById(R.id.list);
         AssistanceRequestAdapter assistanceRequestAdapter = new AssistanceRequestAdapter(getContext(),assistanceRequests);
         listView.setAdapter(assistanceRequestAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AssistanceRequest assistanceRequest = assistanceRequests.get(position);
+                startAssistanceRequestInfoActivity(assistanceRequest);
+            }
+        });
         listView.setDividerHeight(0);
+    }
+
+    private void startAssistanceRequestInfoActivity(AssistanceRequest assistanceRequest)
+    {
+        Intent i = new Intent(getContext(),AssistanceRequestInfoActivity.class);
+        i.putExtra("assistanceRequest",assistanceRequest.toJson());
+        startActivity(i);
     }
 
     private class GetAssistanceRequestsTask extends AsyncTask<Map<String,String>,Void,String>

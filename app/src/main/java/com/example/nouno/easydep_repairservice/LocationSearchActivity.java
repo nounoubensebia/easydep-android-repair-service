@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.nouno.easydep_repairservice.Data.AssistanceRequest;
-import com.example.nouno.easydep_repairservice.Data.DetailedAssistanceRequest;
 import com.example.nouno.easydep_repairservice.Data.Position;
 import com.example.nouno.easydep_repairservice.Data.SearchSuggestion;
 import com.example.nouno.easydep_repairservice.ListAdapters.SearchSuggestionAdapter;
@@ -25,7 +24,7 @@ import java.util.LinkedHashMap;
 
 public class LocationSearchActivity extends AppCompatActivity {
     private ListView listView;
-    private DetailedAssistanceRequest detailedAssistanceRequest;
+    private AssistanceRequest detailedAssistanceRequest;
     private boolean departure;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +41,7 @@ public class LocationSearchActivity extends AppCompatActivity {
     {
         Bundle bundle = getIntent().getExtras();
         Gson gson = new Gson();
-        detailedAssistanceRequest = gson.fromJson(bundle.getString("assistanceRequest"),DetailedAssistanceRequest.class);
+        detailedAssistanceRequest = gson.fromJson(bundle.getString("assistanceRequest"),AssistanceRequest.class);
         departure = bundle.getBoolean("departure");
     }
 

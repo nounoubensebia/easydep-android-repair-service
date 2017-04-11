@@ -34,6 +34,11 @@ public class QueueElement extends AssistanceRequest {
                 QueueElement queueElement = new QueueElement(assistanceRequest.getId(), assistanceRequest.getCarOwner(), assistanceRequest.getDeparture(),
                         assistanceRequest.getToDeparture(), assistanceRequest.getDestination(), assistanceRequest.getToDestination(), assistanceRequest.getTime(), position);
                 queueElements.add(queueElement);
+                if (position>0)
+                    queueElement.setFlag(AssistanceRequest.FLAG_IN_QUEUE);
+                else
+                    queueElement.setFlag(AssistanceRequest.FLAG_INTERVENTION);
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
