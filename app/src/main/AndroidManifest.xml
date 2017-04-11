@@ -22,7 +22,6 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyAmYvO7yTRJbWVCYK1B1Rp3CDOwwictb-c" />
 
-
         <activity
             android:name=".MainActivity"
             android:label="EasyDep">
@@ -48,11 +47,11 @@
             android:label="@string/title_activity_assistance_request_info"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.nouno.easydep_repairservice.MainActivity" />
         </activity>
+        <activity android:name=".EstimateActivity"></activity>
     </application>
 
 </manifest>
