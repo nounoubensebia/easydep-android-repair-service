@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class AssistanceRequest {
     private long id;
     private CarOwner carOwner;
-    private Position departure;
+    private Position userPositon;
     private Path toDeparture;
     private Position destination;
     private Path toDestination;
@@ -37,40 +37,40 @@ public class AssistanceRequest {
     public static final int FLAG_IN_QUEUE = 1;
     public static final int FLAG_INTERVENTION = 2;
 
-    public AssistanceRequest(long id,CarOwner carOwner, Position departure, Path toDeparture,long time) {
+    public AssistanceRequest(long id, CarOwner carOwner, Position userPositon, Path toDeparture, long time) {
         this.id = id;
         this.carOwner = carOwner;
-        this.departure = departure;
+        this.userPositon = userPositon;
         this.toDeparture = toDeparture;
         this.time = time;
         destination = null;
         toDestination = null;
     }
 
-    public AssistanceRequest(long id, CarOwner carOwner, Position departure, Path toDeparture, Position destination, Path toDestination, long time) {
+    public AssistanceRequest(long id, CarOwner carOwner, Position userPositon, Path toDeparture, Position destination, Path toDestination, long time) {
         flag = FLAG_ESTIMATE_REQUEST;
         this.id = id;
         this.carOwner = carOwner;
-        this.departure = departure;
+        this.userPositon = userPositon;
         this.toDeparture = toDeparture;
         this.destination = destination;
         this.toDestination = toDestination;
         this.time = time;
     }
 
-    public AssistanceRequest(long id, CarOwner carOwner, Position departure, Position destination, long time) {
+    public AssistanceRequest(long id, CarOwner carOwner, Position userPositon, Position destination, long time) {
         flag = FLAG_ESTIMATE_REQUEST;
         this.id = id;
         this.carOwner = carOwner;
-        this.departure = departure;
+        this.userPositon = userPositon;
         this.destination = destination;
         this.time = time;
     }
 
-    public AssistanceRequest(long id, CarOwner carOwner, Position departure, Path toDeparture, Position destination, Path toDestination, long time, boolean heavy, boolean vehiculeCanMove, float length, float weight) {
+    public AssistanceRequest(long id, CarOwner carOwner, Position userPositon, Path toDeparture, Position destination, Path toDestination, long time, boolean heavy, boolean vehiculeCanMove, float length, float weight) {
         this.id = id;
         this.carOwner = carOwner;
-        this.departure = departure;
+        this.userPositon = userPositon;
         this.toDeparture = toDeparture;
         this.destination = destination;
         this.toDestination = toDestination;
@@ -111,8 +111,8 @@ public class AssistanceRequest {
         return carOwner;
     }
 
-    public Position getDeparture() {
-        return departure;
+    public Position getUserPositon() {
+        return userPositon;
     }
 
     public Path getToDeparture() {
@@ -135,8 +135,8 @@ public class AssistanceRequest {
         this.toDestination = toDestination;
     }
 
-    public void setDeparture(Position departure) {
-        this.departure = departure;
+    public void setUserPositon(Position userPositon) {
+        this.userPositon = userPositon;
     }
 
     public void setCarOwner(CarOwner carOwner) {
@@ -308,13 +308,13 @@ public class AssistanceRequest {
     }
     public String getDepartureString()
     {
-        if (getDeparture()==null)
+        if (getUserPositon()==null)
         {
             return "Non spécifiée";
         }
         else
         {
-            return getDeparture().getLocationName();
+            return getUserPositon().getLocationName();
         }
     }
     public String getDestinationString()

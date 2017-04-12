@@ -1,7 +1,5 @@
 package com.example.nouno.easydep_repairservice.Data;
 
-import com.example.nouno.easydep_repairservice.QueueFragment;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,7 +29,7 @@ public class QueueElement extends AssistanceRequest {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 int position = jsonObject.getInt("position");
                 AssistanceRequest assistanceRequest = assistanceRequests.get(i);
-                QueueElement queueElement = new QueueElement(assistanceRequest.getId(), assistanceRequest.getCarOwner(), assistanceRequest.getDeparture(),
+                QueueElement queueElement = new QueueElement(assistanceRequest.getId(), assistanceRequest.getCarOwner(), assistanceRequest.getUserPositon(),
                         assistanceRequest.getToDeparture(), assistanceRequest.getDestination(), assistanceRequest.getToDestination(), assistanceRequest.getTime(), position);
                 queueElements.add(queueElement);
                 if (position>0)

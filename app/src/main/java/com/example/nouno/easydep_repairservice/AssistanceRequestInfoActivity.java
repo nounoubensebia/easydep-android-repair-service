@@ -1,12 +1,11 @@
 package com.example.nouno.easydep_repairservice;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -49,7 +48,7 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity {
         toolbarDurationText.setText(assistanceRequest.getDepartureDurationString());
         toolbarDistanceText.setText(assistanceRequest.getDepartureDistanceString());
         TextView departureText = (TextView)findViewById(R.id.departure_text1);
-        departureText.setText(assistanceRequest.getDeparture().getLocationName());
+        departureText.setText(assistanceRequest.getUserPositon().getLocationName());
         TextView durationText = (TextView)findViewById(R.id.duration_text);
         durationText.setText(assistanceRequest.getDepartureDurationString());
         TextView typeText = (TextView)findViewById(R.id.type_text);
@@ -81,7 +80,7 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity {
         if (assistanceRequest.getDestination()!=null)
         {
         TextView departureText2 = (TextView)findViewById(R.id.departure_text2);
-        departureText2.setText(assistanceRequest.getDeparture().getLocationName());
+        departureText2.setText(assistanceRequest.getUserPositon().getLocationName());
         TextView pathText = (TextView)findViewById(R.id.path_text);
         pathText.setText(assistanceRequest.getDepartureToDestinationString());
         TextView destinationText = (TextView)findViewById(R.id.destination_text);
@@ -106,7 +105,24 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity {
             writeEstimateText.setCompoundDrawablesWithIntrinsicBounds(null,drawable,null,null);
             cancelRequestText.setText("Annuler intervention");
         }
+        if (assistanceRequest.getFlag()==AssistanceRequest.FLAG_ESTIMATE_REQUEST)
+        {
+            writeEstimateText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startSendEstimateActivity();
+                }
+            });
+        }
 
+    }
+
+    private void startSendEstimateActivity()
+    {
+        String json = assistanceRequest.toJson();
+        Intent intent = new Intent (this,EstimateActivity.class);
+        intent.putExtra("assistanceRequest",json);
+        startActivity(intent);
     }
 
     public void hideTitleText()

@@ -3,7 +3,6 @@ package com.example.nouno.easydep_repairservice.ListAdapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +39,7 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequest> {
         View destinationLayout = item.findViewById(R.id.destination_layout);
         nameText.setText(assistanceRequest.getCarOwner().getFullName());
         toDepartureDurationText.setText(assistanceRequest.getDepartureDurationString());
-        departureText.setText(assistanceRequest.getDeparture().getLocationName());
+        departureText.setText(assistanceRequest.getUserPositon().getLocationName());
         if (assistanceRequest.getDestination()==null)
         {
             destinationLayout.setVisibility(View.GONE);

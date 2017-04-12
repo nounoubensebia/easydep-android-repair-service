@@ -51,7 +51,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.nouno.easydep_repairservice.MainActivity" />
         </activity>
-        <activity android:name=".EstimateActivity"></activity>
+        <activity android:name=".EstimateActivity"
+            android:label="Devis"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/SignupTheme"></activity>
     </application>
 
 </manifest>

@@ -117,7 +117,7 @@ public class LocationSearchActivity extends AppCompatActivity {
     private void startAskingActivity(Position position)
     {
         if (departure)
-            detailedAssistanceRequest.setDeparture(position);
+            detailedAssistanceRequest.setUserPositon(position);
         else
             detailedAssistanceRequest.setDestination(position);
         Intent i = new Intent(this, CreateAssistanceRequestActivity.class);

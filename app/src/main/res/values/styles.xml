@@ -14,7 +14,7 @@
 
     <style name="SignupTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@android:color/transparent</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
 
         <!--<item name="android:navigationBarColor" tools:targetApi="lollipop">@color/backgroundColor</item>-->
         <item name="colorAccent">#FFF</item>

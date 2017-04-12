@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.example.nouno.easydep_repairservice.Data.AssistanceRequest;
 import com.example.nouno.easydep_repairservice.Data.QueueElement;
 import com.example.nouno.easydep_repairservice.R;
 
@@ -58,7 +57,7 @@ public class QueueElementAdapter extends ArrayAdapter<QueueElement> {
                 break;
         }
         nameText.setText(queueElement.getCarOwner().getFullName());
-        locationText.setText(queueElement.getDeparture().getLocationName());
+        locationText.setText(queueElement.getUserPositon().getLocationName());
         durationText.setText(queueElement.getDepartureDurationString());
         return item;
     }

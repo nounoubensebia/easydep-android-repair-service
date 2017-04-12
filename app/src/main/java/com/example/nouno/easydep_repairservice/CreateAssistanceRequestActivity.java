@@ -12,11 +12,18 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.nouno.easydep_repairservice.Data.AssistanceRequest;
+import com.example.nouno.easydep_repairservice.Data.RepairService;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class CreateAssistanceRequestActivity extends AppCompatActivity {
     private AssistanceRequest assistanceRequest;
     private CreateAssistanceRequestActivity createAssistanceRequestActivity;
+    private RepairService repairService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +42,7 @@ public class CreateAssistanceRequestActivity extends AppCompatActivity {
         assistanceRequest = gson.fromJson(json,AssistanceRequest.class);
         }
         else assistanceRequest = new AssistanceRequest();
+        repairService = new RepairService(7,"Bensebia","Noureddine");
 
     }
 
@@ -109,7 +117,18 @@ public class CreateAssistanceRequestActivity extends AppCompatActivity {
         upImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("TAG",assistanceRequest.toJson());
+                Gson gson = new Gson();
+                try {
+                    JSONObject jsonObject = new JSONObject(assistanceRequest.toJson());
+                    //jsonObject.put("repairService",repairService.toJson());
+                    JSONObject jsonObject1 = new JSONObject();
+                    jsonObject1.put("id",repairService.getId());
+                    jsonObject.put("repairService",jsonObject1);
+                    Log.i("TAG",jsonObject.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
         lastnameLayout.setOnClickListener(new View.OnClickListener() {

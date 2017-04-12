@@ -76,7 +76,7 @@ public class QueueFragment extends Fragment {
 
     private void getRepairService ()
     {
-        repairService = new RepairService(3,"Bensebia","Noureddine");
+        repairService = new RepairService(7,"Bensebia","Noureddine");
     }
 
     private void getQueueElements ()
