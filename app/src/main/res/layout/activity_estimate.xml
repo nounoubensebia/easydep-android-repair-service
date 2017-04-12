@@ -34,7 +34,7 @@
             android:text="Cout estimé de l'intervention"/>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/estimated_cost"
+                android:id="@+id/estimated_cost_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
@@ -49,6 +49,7 @@
 
             </android.support.design.widget.TextInputLayout>
                 <CheckBox
+                    android:id="@+id/dont_know_cost"
                     android:layout_marginTop="8dp"
                     android:text="Je ne sais pas"
                     android:textColor="#FFF"
@@ -62,7 +63,7 @@
             android:layout_marginBottom="16dp"
             android:text="Informations Supplémentaires"/>
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/extra_info"
+            android:id="@+id/extra_info_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
@@ -85,7 +86,15 @@
         android:layout_gravity="bottom|right"
         android:layout_margin="16dp"
         android:src="@drawable/ic_send_24dp"
+        android:id="@+id/fab"
         app:fabSize="normal"
         android:layout_height="wrap_content" />
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="16dp"
+        android:layout_width="58dp"
+        android:layout_height="58dp" />
 
 </android.support.design.widget.CoordinatorLayout>

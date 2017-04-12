@@ -3,16 +3,20 @@ package com.example.nouno.easydep_repairservice;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nouno.easydep_repairservice.Data.AssistanceRequest;
 import com.example.nouno.easydep_repairservice.Data.RepairService;
+import com.example.nouno.easydep_repairservice.exceptions.ConnectionProblemException;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -24,11 +28,13 @@ public class CreateAssistanceRequestActivity extends AppCompatActivity {
     private AssistanceRequest assistanceRequest;
     private CreateAssistanceRequestActivity createAssistanceRequestActivity;
     private RepairService repairService;
+    private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         createAssistanceRequestActivity = this;
         setContentView(R.layout.activity_manual_assistance_request);
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
         retrieveData();
         displayData();
     }
@@ -117,18 +123,7 @@ public class CreateAssistanceRequestActivity extends AppCompatActivity {
         upImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Gson gson = new Gson();
-                try {
-                    JSONObject jsonObject = new JSONObject(assistanceRequest.toJson());
-                    //jsonObject.put("repairService",repairService.toJson());
-                    JSONObject jsonObject1 = new JSONObject();
-                    jsonObject1.put("id",repairService.getId());
-                    jsonObject.put("repairService",jsonObject1);
-                    Log.i("TAG",jsonObject.toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
+                addNewQueueElement();
             }
         });
         lastnameLayout.setOnClickListener(new View.OnClickListener() {
@@ -156,6 +151,56 @@ public class CreateAssistanceRequestActivity extends AppCompatActivity {
                 });dialog.show();
             }
         });
+    }
+
+    private void addNewQueueElement ()
+    {
+        try {
+            JSONObject jsonObject = new JSONObject(assistanceRequest.toJson());
+            //jsonObject.put("repairService",repairService.toJson());
+            JSONObject jsonObject1 = new JSONObject();
+            jsonObject1.put("id",repairService.getId());
+            jsonObject.put("repairService",jsonObject1);
+            AddNewElementTask addNewElementTask = new AddNewElementTask();
+            addNewElementTask.execute(jsonObject.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private class AddNewElementTask extends AsyncTask<String,Void,String>
+    {
+
+        @Override
+        protected void onPreExecute() {
+            progressBar.setVisibility(View.VISIBLE);
+            View fab = findViewById(R.id.go_button);
+            fab.setVisibility(View.GONE);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String response = null;
+            try {
+                response = QueryUtils.makeHttpPostJsonRequest(QueryUtils.SEND_REQUEST_URL,params[0]);
+            } catch (ConnectionProblemException e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Toast.makeText(getApplicationContext(),"Automobiliste ajouté",Toast.LENGTH_LONG).show();
+            startMainActivity();
+        }
+    }
+
+    private void startMainActivity ()
+    {
+        Intent i = new Intent(this,MainActivity.class);
+        startActivity(i);
     }
 
     private void startHeavyRequestActivity ()
