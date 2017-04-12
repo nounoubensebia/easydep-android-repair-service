@@ -188,6 +188,7 @@ public class QueueFragment extends Fragment {
             swipeRefreshLayout.setRefreshing(false);
             queueElements = QueueElement.parseQueueJson(s);
             populateQueueElementList(getView(),queueElements);
+
             listView.setVisibility(View.VISIBLE);
         }
     }

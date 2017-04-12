@@ -39,7 +39,7 @@ public class MyRequestsFragment extends Fragment {
 
     @Override
     public void onStop() {
-        getFragmentManager().beginTransaction().remove(this).commitAllowingStateLoss();
+        //getFragmentManager().beginTransaction().remove(this).commitAllowingStateLoss();
         super.onStop();
 
     }

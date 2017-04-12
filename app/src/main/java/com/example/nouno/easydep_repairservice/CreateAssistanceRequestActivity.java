@@ -220,12 +220,10 @@ public class CreateAssistanceRequestActivity extends AppCompatActivity {
     private void startDestinationSearch ()
     {
         Intent i = new Intent(this,LocationSearchActivity.class);
-
         i.putExtra("assistanceRequest",assistanceRequest.toJson());
         i.putExtra("departure",false);
         startActivity(i);
     }
-
 
 
 }
