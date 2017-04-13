@@ -34,10 +34,12 @@
         <activity
             android:name=".CreateAssistanceRequestActivity"
             android:label="Nouvelle Demande"
+            android:noHistory="true"
             android:theme="@style/RequestTheme" />
         <activity
             android:name=".LocationSearchActivity"
             android:label="Rechercher position"
+            android:noHistory="true"
             android:theme="@style/SignupTheme" />
         <activity
             android:name=".HeavyAssistanceRequestActivity"
@@ -46,6 +48,7 @@
             android:name=".AssistanceRequestInfoActivity"
             android:label="@string/title_activity_assistance_request_info"
             android:parentActivityName=".MainActivity"
+            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -53,7 +56,7 @@
         </activity>
         <activity android:name=".EstimateActivity"
             android:label="Devis"
-            android:windowSoftInputMode="adjustResize"
+            android:noHistory="true"
             android:theme="@style/SignupTheme"></activity>
     </application>
 

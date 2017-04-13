@@ -36,24 +36,30 @@ public class QueueElementAdapter extends ArrayAdapter<QueueElement> {
         TextView nameText = (TextView)item.findViewById(R.id.name_text);
         TextView locationText = (TextView)item.findViewById(R.id.location_text);
         TextView durationText = (TextView)item.findViewById(R.id.duration_text);
+        View queueLyout = item.findViewById(R.id.queue_layout);
         positionText.setText(queueElement.getPosition()+"");
         TextView interventionText = (TextView)item.findViewById(R.id.intervention_text);
         switch (queueElement.getPosition())
         {
             case 0 : positionText.setVisibility(View.GONE);
                 interventionText.setVisibility(View.VISIBLE);
+                queueLyout.setVisibility(View.GONE);
                 break;
             case 1:positionText.setTextColor(getContext().getResources().getColor(R.color.greenPrimary));
                 interventionText.setVisibility(View.GONE);positionText.setVisibility(View.VISIBLE);
+                queueLyout.setVisibility(View.VISIBLE);
                 break;
             case 2:positionText.setTextColor(getContext().getResources().getColor(R.color.orangePrimary));
                 interventionText.setVisibility(View.GONE);positionText.setVisibility(View.VISIBLE);
+                queueLyout.setVisibility(View.GONE);
                 break;
             case 3:positionText.setTextColor(getContext().getResources().getColor(android.R.color.holo_red_light));
                 interventionText.setVisibility(View.GONE);positionText.setVisibility(View.VISIBLE);
+                queueLyout.setVisibility(View.GONE);
                 break;
             case 4:positionText.setTextColor(getContext().getResources().getColor(android.R.color.holo_red_dark));
                 interventionText.setVisibility(View.GONE);positionText.setVisibility(View.VISIBLE);
+                queueLyout.setVisibility(View.GONE);
                 break;
         }
         nameText.setText(queueElement.getCarOwner().getFullName());

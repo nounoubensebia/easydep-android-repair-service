@@ -1,8 +1,10 @@
 package com.example.nouno.easydep_repairservice;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -12,15 +14,31 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.nouno.easydep_repairservice.Data.AssistanceRequest;
+import com.example.nouno.easydep_repairservice.exceptions.ConnectionProblemException;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 //TODO add map and listeners
 
-public class AssistanceRequestInfoActivity extends AppCompatActivity {
+public class AssistanceRequestInfoActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private AssistanceRequest assistanceRequest;
+    private ProgressDialog progressDialog;
+    private GoogleMap map;
+    private AssistanceRequestInfoActivity assistanceRequestInfoActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        assistanceRequestInfoActivity = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assistance_request_info);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -29,6 +47,8 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity {
         retreiveData();
         hideTitleText();
         displayData();
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
     private void retreiveData ()
@@ -115,6 +135,21 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity {
             });
         }
 
+        cancelRequestText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelRequest();
+            }
+        });
+
+    }
+    private void cancelRequest ()
+    {
+        LinkedHashMap<String,String> map = new LinkedHashMap<>();
+        map.put("action",QueryUtils.CANCEL_REQUEST_ACTION);
+        map.put("assistance_request_id",assistanceRequest.getId()+"");
+        CancelRequestTask cancelRequestTask = new CancelRequestTask();
+        cancelRequestTask.execute(map);
     }
 
     private void startSendEstimateActivity()
@@ -149,5 +184,52 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        map=googleMap;
+        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        map.getUiSettings().setMapToolbarEnabled(false);
+        map.getUiSettings().setAllGesturesEnabled(false);
+        double latitudecenter = assistanceRequest.getUserPositon().getLatitude();
+        double longitudecenter = assistanceRequest.getUserPositon().getLongitude();
+        LatLng centerauto=new LatLng(latitudecenter,longitudecenter);
+        Marker marker1 = map.addMarker(new MarkerOptions().position(centerauto).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
+        map.moveCamera((CameraUpdateFactory.newLatLngZoom(centerauto,12)));
+
+    }
+
+    private class CancelRequestTask extends AsyncTask<Map<String,String>,Void,String>
+    {
+        @Override
+        protected void onPreExecute() {
+            progressDialog = (ProgressDialog)DialogUtils.buildProgressDialog("Veuillez patientez",assistanceRequestInfoActivity);
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Map<String, String>... params) {
+            String response = null;
+            try {
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.SEND_REQUEST_URL,params[0]);
+            } catch (ConnectionProblemException e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            progressDialog.dismiss();
+            startMainActivity();
+            finish();
+        }
+    }
+
+    private void startMainActivity()
+    {
+        Intent i = new Intent(this,MainActivity.class);
+        startActivity(i);
     }
 }

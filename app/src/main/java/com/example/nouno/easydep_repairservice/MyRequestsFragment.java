@@ -17,10 +17,17 @@ import android.view.ViewGroup;
 public class MyRequestsFragment extends Fragment {
     TabLayout tabLayout;
     ViewPager viewPager;
+    FragmentPagerAdapter fragmentPagerAdapter;
     public MyRequestsFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        fragmentPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager());
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -28,7 +35,7 @@ public class MyRequestsFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_my_requests, container, false);
         tabLayout = (TabLayout)rootView.findViewById(R.id.sliding_tabs);
-        FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager());
+
         viewPager = (ViewPager)rootView.findViewById(R.id.viewpager);
         viewPager.setAdapter(fragmentPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);

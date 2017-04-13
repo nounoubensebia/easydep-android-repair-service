@@ -1,6 +1,7 @@
 package com.example.nouno.easydep_repairservice;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
@@ -43,5 +44,11 @@ public class DialogUtils {
         });
         return builder.create();
 
+    }
+    public static Dialog buildProgressDialog (String msg,Context context)
+    {
+        ProgressDialog dialog = new ProgressDialog(context);
+        dialog.setMessage(msg);
+        return dialog;
     }
 }

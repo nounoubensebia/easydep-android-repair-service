@@ -11,6 +11,9 @@ public class MainActivity extends AppCompatActivity {
 
     //private TextView mTextMessage;
     //ViewPager viewPager;
+    MyAccountFragment myAccountFragment;
+    MyRequestsFragment myRequestsFragment;
+    StatisticsFragment statisticsFragment;
     View content;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -20,20 +23,32 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_my_account:
                     content.setVisibility(View.VISIBLE);
-                    MyAccountFragment myAccountFragment = new MyAccountFragment();
+                    myAccountFragment = new MyAccountFragment();
                     getSupportFragmentManager().beginTransaction().replace(R.id.content,myAccountFragment).commit();
                     getSupportActionBar().setElevation(12);
+                    if (myRequestsFragment!=null)
+                    getSupportFragmentManager().beginTransaction().remove(myRequestsFragment).commitAllowingStateLoss();
+                    if (statisticsFragment!=null)
+                    getSupportFragmentManager().beginTransaction().remove(statisticsFragment).commitAllowingStateLoss();
                     return true;
                 case R.id.navigation_lists:
                     getSupportActionBar().setElevation(0);
-                    MyRequestsFragment myRequestsFragment = new MyRequestsFragment();
+                    myRequestsFragment = new MyRequestsFragment();
                     getSupportFragmentManager().beginTransaction().replace(R.id.content, myRequestsFragment).commit();
+                    if (myAccountFragment!=null)
+                    getSupportFragmentManager().beginTransaction().remove(myAccountFragment).commitAllowingStateLoss();
+                    if (statisticsFragment!=null)
+                    getSupportFragmentManager().beginTransaction().remove(statisticsFragment).commitAllowingStateLoss();
                     return true;
                 case R.id.navigation_statistics:
                     getSupportActionBar().setElevation(12);
                     content.setVisibility(View.VISIBLE);
-                    StatisticsFragment statisticsFragment = new StatisticsFragment();
+                    statisticsFragment = new StatisticsFragment();
                     getSupportFragmentManager().beginTransaction().replace(R.id.content,statisticsFragment).commit();
+                    if (myAccountFragment!=null)
+                    getSupportFragmentManager().beginTransaction().remove(myAccountFragment).commitAllowingStateLoss();
+                    if (myRequestsFragment!=null)
+                    getSupportFragmentManager().beginTransaction().remove(myRequestsFragment).commitAllowingStateLoss();
                     return true;
             }
             return false;

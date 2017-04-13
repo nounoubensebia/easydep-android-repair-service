@@ -200,8 +200,8 @@ public class AssistanceRequest {
                 String lastname = carOnwerJsonObject.getString("last_name");
                 CarOwner carOwner = new CarOwner(carOwnerid,firstname,lastname);
                 JSONObject departureJsonObject = jsonObject.getJSONObject("departure");
-                double latitude = departureJsonObject.getLong("latitude");
-                double longitude = departureJsonObject.getLong("longitude");
+                double latitude = departureJsonObject.getDouble("latitude");
+                double longitude = departureJsonObject.getDouble("longitude");
                 String locationName = departureJsonObject.getString("location_name");
                 Position departure = new Position(latitude,longitude,locationName);
                 JSONObject toDepartureJsonObject = jsonObject.getJSONObject("to_departure");
