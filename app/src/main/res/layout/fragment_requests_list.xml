@@ -3,14 +3,28 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context="com.example.nouno.easydep_repairservice.RequestsListFragment">
+    tools:context="com.example.nouno.easydep_repairservice.Fragments.RequestsListFragment">
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refrech_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></ListView>
+        <TextView
+            android:fontFamily="sans-serif"
+            android:visibility="gone"
+            android:id="@+id/no_request"
+            android:textSize="16sp"
+            android:textColor="@color/colorPrimary"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:text="Aucune demande en cours"
+            android:layout_height="wrap_content" />
+        </FrameLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
    </LinearLayout>

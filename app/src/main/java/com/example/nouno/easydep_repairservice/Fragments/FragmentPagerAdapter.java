@@ -1,4 +1,4 @@
-package com.example.nouno.easydep_repairservice;
+package com.example.nouno.easydep_repairservice.Fragments;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

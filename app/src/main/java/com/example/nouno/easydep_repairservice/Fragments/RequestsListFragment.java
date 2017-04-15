@@ -1,4 +1,4 @@
-package com.example.nouno.easydep_repairservice;
+package com.example.nouno.easydep_repairservice.Fragments;
 
 
 import android.content.Intent;
@@ -11,13 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.example.nouno.easydep_repairservice.Activities.AssistanceRequestInfoActivity;
 import com.example.nouno.easydep_repairservice.Data.AssistanceRequest;
-import com.example.nouno.easydep_repairservice.Data.CarOwner;
-import com.example.nouno.easydep_repairservice.Data.Path;
-import com.example.nouno.easydep_repairservice.Data.Position;
 import com.example.nouno.easydep_repairservice.Data.RepairService;
 import com.example.nouno.easydep_repairservice.ListAdapters.AssistanceRequestAdapter;
+import com.example.nouno.easydep_repairservice.QueryUtils;
+import com.example.nouno.easydep_repairservice.R;
 import com.example.nouno.easydep_repairservice.exceptions.ConnectionProblemException;
 
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class RequestsListFragment extends Fragment {
     private View view;
     private RepairService repairService;
     private ListView listView;
+    private TextView noRequestsText;
     public RequestsListFragment() {
         // Required empty public constructor
     }
@@ -47,6 +49,7 @@ public class RequestsListFragment extends Fragment {
         swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe_refrech_layout);
         getRepairService();
         listView = (ListView)view.findViewById(R.id.list);
+        noRequestsText = (TextView)view.findViewById(R.id.no_request);
         getAssistanceRequests();
         swipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1, R.color.refresh_progress_2, R.color.refresh_progress_3);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -67,7 +70,7 @@ public class RequestsListFragment extends Fragment {
     private void getAssistanceRequests ()
     {
         LinkedHashMap<String,String> map = new LinkedHashMap<>();
-        map.put("action",QueryUtils.GET_REQUESTS);
+        map.put("action", QueryUtils.GET_REQUESTS);
         map.put("repair_service_id",repairService.getId()+"");
         GetAssistanceRequestsTask getAssistanceRequestsTask = new GetAssistanceRequestsTask();
         getAssistanceRequestsTask.execute(map);
@@ -101,6 +104,7 @@ public class RequestsListFragment extends Fragment {
 
         @Override
         protected void onPreExecute() {
+            noRequestsText.setVisibility(View.GONE);
             swipeRefreshLayout.setRefreshing(true);
             listView.setVisibility(View.GONE);
         }
@@ -121,8 +125,17 @@ public class RequestsListFragment extends Fragment {
 
             swipeRefreshLayout.setRefreshing(false);
             assistanceRequests = AssistanceRequest.parseJson(s);
+            if (assistanceRequests.size()>0)
+            {
             populateAssistanceRequestsList(view,assistanceRequests);
             listView.setVisibility(View.VISIBLE);
+                noRequestsText.setVisibility(View.GONE);
+            }
+            else
+            {
+                noRequestsText.setVisibility(View.VISIBLE);
+                listView.setVisibility(View.GONE);
+            }
         }
     }
 

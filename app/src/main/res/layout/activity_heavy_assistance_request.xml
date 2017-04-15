@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context=".HeavyAssistanceRequestActivity">
+    tools:context=".Activities.HeavyAssistanceRequestActivity">
     <TextView
         android:layout_marginTop="16dp"
         android:layout_marginLeft="16dp"

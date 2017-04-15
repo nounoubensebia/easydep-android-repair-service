@@ -1,4 +1,4 @@
-package com.example.nouno.easydep_repairservice;
+package com.example.nouno.easydep_repairservice.Activities;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -12,7 +12,10 @@ import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.nouno.easydep_repairservice.Activities.MainActivity;
 import com.example.nouno.easydep_repairservice.Data.AssistanceRequest;
+import com.example.nouno.easydep_repairservice.QueryUtils;
+import com.example.nouno.easydep_repairservice.R;
 import com.example.nouno.easydep_repairservice.exceptions.ConnectionProblemException;
 import com.google.gson.Gson;
 
@@ -80,7 +83,7 @@ public class EstimateActivity extends AppCompatActivity {
         linkedHashMap.put("price",price);
         linkedHashMap.put("comment",comment);
         linkedHashMap.put("assistance_request_id",assistanceRequest.getId()+"");
-        linkedHashMap.put("action",QueryUtils.SEND_ESTIMATE_ACTION);
+        linkedHashMap.put("action", QueryUtils.SEND_ESTIMATE_ACTION);
         SendEstimateTask sendEstimateTask = new SendEstimateTask();
         sendEstimateTask.execute(linkedHashMap);
     }

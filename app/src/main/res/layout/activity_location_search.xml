@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
-    tools:context=".LocationSearchActivity">
+    tools:context=".Activities.LocationSearchActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar1"

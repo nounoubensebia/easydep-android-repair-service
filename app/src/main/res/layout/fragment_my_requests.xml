@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.example.nouno.easydep_repairservice.MyRequestsFragment">
+    tools:context="com.example.nouno.easydep_repairservice.Fragments.MyRequestsFragment">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/sliding_tabs"

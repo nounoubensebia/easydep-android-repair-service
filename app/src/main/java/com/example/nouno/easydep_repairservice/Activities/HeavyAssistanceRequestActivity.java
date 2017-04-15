@@ -1,4 +1,4 @@
-package com.example.nouno.easydep_repairservice;
+package com.example.nouno.easydep_repairservice.Activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +10,9 @@ import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.example.nouno.easydep_repairservice.Activities.CreateAssistanceRequestActivity;
 import com.example.nouno.easydep_repairservice.Data.AssistanceRequest;
+import com.example.nouno.easydep_repairservice.R;
 import com.google.gson.Gson;
 
 public class HeavyAssistanceRequestActivity extends AppCompatActivity {

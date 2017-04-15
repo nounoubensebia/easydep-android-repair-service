@@ -1,4 +1,4 @@
-package com.example.nouno.easydep_repairservice;
+package com.example.nouno.easydep_repairservice.Fragments;
 
 
 import android.content.Intent;
@@ -13,11 +13,16 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.example.nouno.easydep_repairservice.Activities.AssistanceRequestInfoActivity;
+import com.example.nouno.easydep_repairservice.Activities.CreateAssistanceRequestActivity;
 import com.example.nouno.easydep_repairservice.Data.AssistanceRequest;
 import com.example.nouno.easydep_repairservice.Data.QueueElement;
 import com.example.nouno.easydep_repairservice.Data.RepairService;
 import com.example.nouno.easydep_repairservice.ListAdapters.QueueElementAdapter;
+import com.example.nouno.easydep_repairservice.QueryUtils;
+import com.example.nouno.easydep_repairservice.R;
 import com.example.nouno.easydep_repairservice.exceptions.ConnectionProblemException;
 
 import java.util.ArrayList;
@@ -34,6 +39,7 @@ public class QueueFragment extends Fragment {
     private ArrayList<QueueElement> queueElements;
     private View view;
     private ListView listView;
+    private TextView noInterventionText;
     private RepairService repairService;
     private SwipeRefreshLayout swipeRefreshLayout;
     private View fab;
@@ -51,6 +57,7 @@ public class QueueFragment extends Fragment {
         swipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1, R.color.refresh_progress_2, R.color.refresh_progress_3);
         listView = (ListView)view.findViewById(R.id.list);
         fab = view.findViewById(R.id.fab);
+        noInterventionText = (TextView)view.findViewById(R.id.no_intervention);
         getRepairService();
         getQueueElements();
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -83,7 +90,7 @@ public class QueueFragment extends Fragment {
     {
         LinkedHashMap<String,String> map = new LinkedHashMap<>();
         map.put("repair_service_id",repairService.getId()+"");
-        map.put("action",QueryUtils.GET_QUEUE_ELEMENTS);
+        map.put("action", QueryUtils.GET_QUEUE_ELEMENTS);
         GetQueueElementsTask getQueueElementsTask = new GetQueueElementsTask();
         getQueueElementsTask.execute(map);
     }
@@ -168,6 +175,7 @@ public class QueueFragment extends Fragment {
             exit(fab);
             listView.setVisibility(View.GONE);
             swipeRefreshLayout.setRefreshing(true);
+            noInterventionText.setVisibility(View.GONE);
         }
 
         @Override
@@ -186,10 +194,16 @@ public class QueueFragment extends Fragment {
 
             enter(fab);
             swipeRefreshLayout.setRefreshing(false);
-            queueElements = QueueElement.parseQueueJson(s);
-            populateQueueElementList(getView(),queueElements);
 
-            listView.setVisibility(View.VISIBLE);
+            queueElements = QueueElement.parseQueueJson(s);
+            if (queueElements.size()>0)
+            {
+            populateQueueElementList(getView(),queueElements);
+            listView.setVisibility(View.VISIBLE);}
+            else {
+                noInterventionText.setVisibility(View.VISIBLE);
+                listView.setVisibility(View.GONE);
+            }
         }
     }
 

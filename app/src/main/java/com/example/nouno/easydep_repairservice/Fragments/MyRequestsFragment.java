@@ -1,6 +1,7 @@
-package com.example.nouno.easydep_repairservice;
+package com.example.nouno.easydep_repairservice.Fragments;
 
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -10,6 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.nouno.easydep_repairservice.Activities.MainActivity;
+import com.example.nouno.easydep_repairservice.Fragments.FragmentPagerAdapter;
+import com.example.nouno.easydep_repairservice.R;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,6 +22,7 @@ import android.view.ViewGroup;
 public class MyRequestsFragment extends Fragment {
     TabLayout tabLayout;
     ViewPager viewPager;
+    MainActivity mainActivity;
     FragmentPagerAdapter fragmentPagerAdapter;
     public MyRequestsFragment() {
         // Required empty public constructor
@@ -39,6 +45,8 @@ public class MyRequestsFragment extends Fragment {
         viewPager = (ViewPager)rootView.findViewById(R.id.viewpager);
         viewPager.setAdapter(fragmentPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
+        mainActivity = (MainActivity)getActivity();
+        //mainActivity.getSupportActionBar().show();
         return rootView;
     }
 
@@ -46,6 +54,7 @@ public class MyRequestsFragment extends Fragment {
 
     @Override
     public void onStop() {
+        //mainActivity.getSupportActionBar().hide();
         //getFragmentManager().beginTransaction().remove(this).commitAllowingStateLoss();
         super.onStop();
 

@@ -1,4 +1,4 @@
-package com.example.nouno.easydep_repairservice;
+package com.example.nouno.easydep_repairservice.Activities;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -14,6 +14,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.nouno.easydep_repairservice.Data.AssistanceRequest;
+import com.example.nouno.easydep_repairservice.DialogUtils;
+import com.example.nouno.easydep_repairservice.QueryUtils;
+import com.example.nouno.easydep_repairservice.R;
 import com.example.nouno.easydep_repairservice.exceptions.ConnectionProblemException;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -146,7 +149,7 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity implements 
     private void cancelRequest ()
     {
         LinkedHashMap<String,String> map = new LinkedHashMap<>();
-        map.put("action",QueryUtils.CANCEL_REQUEST_ACTION);
+        map.put("action", QueryUtils.CANCEL_REQUEST_ACTION);
         map.put("assistance_request_id",assistanceRequest.getId()+"");
         CancelRequestTask cancelRequestTask = new CancelRequestTask();
         cancelRequestTask.execute(map);
@@ -204,7 +207,7 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity implements 
     {
         @Override
         protected void onPreExecute() {
-            progressDialog = (ProgressDialog)DialogUtils.buildProgressDialog("Veuillez patientez",assistanceRequestInfoActivity);
+            progressDialog = (ProgressDialog) DialogUtils.buildProgressDialog("Veuillez patientez",assistanceRequestInfoActivity);
             progressDialog.show();
         }
 

@@ -1,4 +1,4 @@
-package com.example.nouno.easydep_repairservice;
+package com.example.nouno.easydep_repairservice.Activities;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -13,10 +13,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.nouno.easydep_repairservice.Activities.CreateAssistanceRequestActivity;
 import com.example.nouno.easydep_repairservice.Data.AssistanceRequest;
 import com.example.nouno.easydep_repairservice.Data.Position;
 import com.example.nouno.easydep_repairservice.Data.SearchSuggestion;
 import com.example.nouno.easydep_repairservice.ListAdapters.SearchSuggestionAdapter;
+import com.example.nouno.easydep_repairservice.QueryUtils;
+import com.example.nouno.easydep_repairservice.R;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
