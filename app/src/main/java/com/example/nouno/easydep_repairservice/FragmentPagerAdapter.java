@@ -30,11 +30,11 @@ public class FragmentPagerAdapter extends android.support.v4.app.FragmentPagerAd
     public CharSequence getPageTitle(int position) {
         if (position==0)
         {
-            return "Mes demandes";
+            return "Demandes";
         }
         else
         {
-            return "Ma file d'attente";
+            return "Interventions";
         }
     }
 }
