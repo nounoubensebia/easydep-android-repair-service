@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/greenPrimary">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:drawablePadding="8dp"
+            android:drawableTop="@drawable/ic_check_circle_white_24dp"
+            android:text="Inscription terminée"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"
+            android:gravity="center_horizontal"
+            android:layout_marginRight="16dp"
+            android:text="Vous pouvez maintenent recevoir les demandes des automobilistes."/>
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:visibility="visible"
+        android:layout_width="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="16dp"
+        app:fabSize="normal"
+        app:backgroundTint="#FFF"
+        android:src="@drawable/ic_chevron_right_24dp"
+        android:layout_height="wrap_content" />
+</android.support.design.widget.CoordinatorLayout>

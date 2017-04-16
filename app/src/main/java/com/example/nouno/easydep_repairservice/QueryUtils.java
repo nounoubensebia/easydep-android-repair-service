@@ -34,6 +34,9 @@ public class QueryUtils {
     public static final String GET_PLACE_PREDICTIONS_URL ="https://maps.googleapis.com/maps/api/place/autocomplete/json?";
     public static final String CANCEL_REQUEST_ACTION = "cancel_request_repair_service";
     public static final String SEND_ESTIMATE_ACTION = "send_estimate";
+    public static final String CONNECTION_PROBLEM = "connection problem";
+    public static final String ACCOUNT_URL = "http://192.168.1.14/EasyDep/repair_service_account_api";
+    public static final String SIGNUP_ACTION = "signup";
 
     public static String makeHttpPostRequest (String urlString,Map<String,String> parameters) throws ConnectionProblemException
     {   String response = null;
@@ -86,6 +89,7 @@ public class QueryUtils {
             {
                 urlConnection.disconnect();
             }
+
             return response;
         }
     }

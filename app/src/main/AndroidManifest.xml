@@ -25,11 +25,7 @@
         <activity
             android:name=".Activities.MainActivity"
             android:label="EasyDep">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Activities.CreateAssistanceRequestActivity"
@@ -47,17 +43,30 @@
         <activity
             android:name=".Activities.AssistanceRequestInfoActivity"
             android:label="@string/title_activity_assistance_request_info"
-            android:parentActivityName=".Activities.MainActivity"
             android:noHistory="true"
+            android:parentActivityName=".Activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.nouno.easydep_repairservice.Activities.MainActivity" />
         </activity>
-        <activity android:name=".Activities.EstimateActivity"
+        <activity
+            android:name=".Activities.EstimateActivity"
             android:label="Devis"
             android:noHistory="true"
-            android:theme="@style/SignupTheme"></activity>
+            android:theme="@style/SignupTheme" />
+        <activity android:name=".Activities.LoginActivity"
+            android:theme="@style/SignupTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            </activity>
+        <activity android:name=".Activities.Signup1Activity" android:theme="@style/SignupTheme" />
+        <activity android:name=".Activities.Signup2Activity" android:theme="@style/SignupTheme"/>
+        <activity android:name=".Activities.Signup3Activity" android:theme="@style/SignupTheme"/>
+        <activity android:name=".Activities.Signup4Activity" android:theme="@style/SignupTheme"></activity>
     </application>
 
 </manifest>

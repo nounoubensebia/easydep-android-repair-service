@@ -35,7 +35,9 @@ public class RequestsListFragment extends Fragment {
     private View view;
     private RepairService repairService;
     private ListView listView;
+    private TextView noConnectionText;
     private TextView noRequestsText;
+
     public RequestsListFragment() {
         // Required empty public constructor
     }
@@ -46,10 +48,11 @@ public class RequestsListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_requests_list, container, false);
-        swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe_refrech_layout);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refrech_layout);
         getRepairService();
-        listView = (ListView)view.findViewById(R.id.list);
-        noRequestsText = (TextView)view.findViewById(R.id.no_request);
+        listView = (ListView) view.findViewById(R.id.list);
+        noRequestsText = (TextView) view.findViewById(R.id.no_request);
+        noConnectionText = (TextView) view.findViewById(R.id.no_connection);
         getAssistanceRequests();
         swipeRefreshLayout.setColorSchemeResources(R.color.refresh_progress_1, R.color.refresh_progress_2, R.color.refresh_progress_3);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -62,25 +65,22 @@ public class RequestsListFragment extends Fragment {
         return view;
     }
 
-    private void getRepairService ()
-    {
-        repairService = new RepairService(7,"Bensebia","Noureddine");
+    private void getRepairService() {
+        repairService = new RepairService(7, "Bensebia", "Noureddine");
     }
 
-    private void getAssistanceRequests ()
-    {
-        LinkedHashMap<String,String> map = new LinkedHashMap<>();
+    private void getAssistanceRequests() {
+        LinkedHashMap<String, String> map = new LinkedHashMap<>();
         map.put("action", QueryUtils.GET_REQUESTS);
-        map.put("repair_service_id",repairService.getId()+"");
+        map.put("repair_service_id", repairService.getId() + "");
         GetAssistanceRequestsTask getAssistanceRequestsTask = new GetAssistanceRequestsTask();
         getAssistanceRequestsTask.execute(map);
     }
 
 
-    private void populateAssistanceRequestsList (View view, final ArrayList<AssistanceRequest> assistanceRequests)
-    {
+    private void populateAssistanceRequestsList(View view, final ArrayList<AssistanceRequest> assistanceRequests) {
         ListView listView = (ListView) view.findViewById(R.id.list);
-        AssistanceRequestAdapter assistanceRequestAdapter = new AssistanceRequestAdapter(getContext(),assistanceRequests);
+        AssistanceRequestAdapter assistanceRequestAdapter = new AssistanceRequestAdapter(getContext(), assistanceRequests);
         listView.setAdapter(assistanceRequestAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -92,18 +92,17 @@ public class RequestsListFragment extends Fragment {
         listView.setDividerHeight(0);
     }
 
-    private void startAssistanceRequestInfoActivity(AssistanceRequest assistanceRequest)
-    {
-        Intent i = new Intent(getContext(),AssistanceRequestInfoActivity.class);
-        i.putExtra("assistanceRequest",assistanceRequest.toJson());
+    private void startAssistanceRequestInfoActivity(AssistanceRequest assistanceRequest) {
+        Intent i = new Intent(getContext(), AssistanceRequestInfoActivity.class);
+        i.putExtra("assistanceRequest", assistanceRequest.toJson());
         startActivity(i);
     }
 
-    private class GetAssistanceRequestsTask extends AsyncTask<Map<String,String>,Void,String>
-    {
+    private class GetAssistanceRequestsTask extends AsyncTask<Map<String, String>, Void, String> {
 
         @Override
         protected void onPreExecute() {
+            noConnectionText.setVisibility(View.GONE);
             noRequestsText.setVisibility(View.GONE);
             swipeRefreshLayout.setRefreshing(true);
             listView.setVisibility(View.GONE);
@@ -113,28 +112,29 @@ public class RequestsListFragment extends Fragment {
         protected String doInBackground(Map<String, String>... params) {
             String response = null;
             try {
-                response = QueryUtils.makeHttpPostRequest(QueryUtils.SEND_REQUEST_URL,params[0]);
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.SEND_REQUEST_URL, params[0]);
             } catch (ConnectionProblemException e) {
-                e.printStackTrace();
+                response = QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
 
         @Override
         protected void onPostExecute(String s) {
-
             swipeRefreshLayout.setRefreshing(false);
-            assistanceRequests = AssistanceRequest.parseJson(s);
-            if (assistanceRequests.size()>0)
-            {
-            populateAssistanceRequestsList(view,assistanceRequests);
-            listView.setVisibility(View.VISIBLE);
-                noRequestsText.setVisibility(View.GONE);
-            }
-            else
-            {
-                noRequestsText.setVisibility(View.VISIBLE);
-                listView.setVisibility(View.GONE);
+            if (s.equals(QueryUtils.CONNECTION_PROBLEM)) {
+                noConnectionText.setVisibility(View.VISIBLE);
+            } else {
+
+                assistanceRequests = AssistanceRequest.parseJson(s);
+                if (assistanceRequests.size() > 0) {
+                    populateAssistanceRequestsList(view, assistanceRequests);
+                    listView.setVisibility(View.VISIBLE);
+                    noRequestsText.setVisibility(View.GONE);
+                } else {
+                    noRequestsText.setVisibility(View.VISIBLE);
+                    listView.setVisibility(View.GONE);
+                }
             }
         }
     }

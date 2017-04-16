@@ -41,6 +41,7 @@ public class QueueFragment extends Fragment {
     private ListView listView;
     private TextView noInterventionText;
     private RepairService repairService;
+    private TextView noConnectionText;
     private SwipeRefreshLayout swipeRefreshLayout;
     private View fab;
     public QueueFragment() {
@@ -58,6 +59,7 @@ public class QueueFragment extends Fragment {
         listView = (ListView)view.findViewById(R.id.list);
         fab = view.findViewById(R.id.fab);
         noInterventionText = (TextView)view.findViewById(R.id.no_intervention);
+        noConnectionText = (TextView)view.findViewById(R.id.no_connection);
         getRepairService();
         getQueueElements();
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -172,6 +174,7 @@ public class QueueFragment extends Fragment {
 
         @Override
         protected void onPreExecute() {
+            noConnectionText.setVisibility(View.GONE);
             exit(fab);
             listView.setVisibility(View.GONE);
             swipeRefreshLayout.setRefreshing(true);
@@ -184,6 +187,7 @@ public class QueueFragment extends Fragment {
             try {
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.SEND_REQUEST_URL,params[0]);
             } catch (ConnectionProblemException e) {
+                response=QueryUtils.CONNECTION_PROBLEM;
                 e.printStackTrace();
             }
             return response;
@@ -191,18 +195,25 @@ public class QueueFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String s) {
-
-            enter(fab);
             swipeRefreshLayout.setRefreshing(false);
 
-            queueElements = QueueElement.parseQueueJson(s);
-            if (queueElements.size()>0)
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM)) {
+
+                enter(fab);
+
+
+                queueElements = QueueElement.parseQueueJson(s);
+                if (queueElements.size() > 0) {
+                    populateQueueElementList(getView(), queueElements);
+                    listView.setVisibility(View.VISIBLE);
+                } else {
+                    noInterventionText.setVisibility(View.VISIBLE);
+                    listView.setVisibility(View.GONE);
+                }
+            }
+            else
             {
-            populateQueueElementList(getView(),queueElements);
-            listView.setVisibility(View.VISIBLE);}
-            else {
-                noInterventionText.setVisibility(View.VISIBLE);
-                listView.setVisibility(View.GONE);
+                noConnectionText.setVisibility(View.VISIBLE);
             }
         }
     }

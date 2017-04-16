@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -12,6 +13,8 @@ import com.example.nouno.easydep_repairservice.Fragments.MyAccountFragment;
 import com.example.nouno.easydep_repairservice.Fragments.MyRequestsFragment;
 import com.example.nouno.easydep_repairservice.R;
 import com.example.nouno.easydep_repairservice.Fragments.StatisticsFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -88,6 +91,9 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().remove(myAccountFragment).commitAllowingStateLoss();
         if (statisticsFragment != null)
             getSupportFragmentManager().beginTransaction().remove(statisticsFragment).commitAllowingStateLoss();
+
+        String token = FirebaseInstanceId.getInstance().getToken();
+        Log.i("TOKEN",token);
 
     }
 

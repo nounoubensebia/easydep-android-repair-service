@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <TextView
+        android:id="@+id/name_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -94,7 +95,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:text="05672349"
-
+                    android:id="@+id/phone_text"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
@@ -136,7 +137,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:text="50Da/Km"
-
+                    android:id="@+id/price_text"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
@@ -178,7 +179,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:text="disponible"
-
+                    android:id="@+id/status_text"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
@@ -221,7 +222,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:text="Cité zerhouni mokhtar"
-
+                    android:id="@+id/position_text"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
@@ -242,6 +243,7 @@
             android:layout_height="1dp"/>
 
         <RelativeLayout
+            android:id="@+id/logout_layout"
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_marginBottom="8dp"
