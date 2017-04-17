@@ -1,10 +1,14 @@
 package com.example.nouno.easydep_repairservice.Fragments;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +23,7 @@ import com.example.nouno.easydep_repairservice.Data.RepairService;
 import com.example.nouno.easydep_repairservice.ListAdapters.AssistanceRequestAdapter;
 import com.example.nouno.easydep_repairservice.QueryUtils;
 import com.example.nouno.easydep_repairservice.R;
+import com.example.nouno.easydep_repairservice.Utils;
 import com.example.nouno.easydep_repairservice.exceptions.ConnectionProblemException;
 
 import java.util.ArrayList;
@@ -37,11 +42,22 @@ public class RequestsListFragment extends Fragment {
     private ListView listView;
     private TextView noConnectionText;
     private TextView noRequestsText;
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            getAssistanceRequests();
+        }
+    };
 
     public RequestsListFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver,new IntentFilter("new_request"));
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,7 +82,7 @@ public class RequestsListFragment extends Fragment {
     }
 
     private void getRepairService() {
-        repairService = new RepairService(7, "Bensebia", "Noureddine");
+        repairService = Utils.getLoggedRepairService(getActivity().getApplicationContext());
     }
 
     private void getAssistanceRequests() {
@@ -94,7 +110,8 @@ public class RequestsListFragment extends Fragment {
 
     private void startAssistanceRequestInfoActivity(AssistanceRequest assistanceRequest) {
         Intent i = new Intent(getContext(), AssistanceRequestInfoActivity.class);
-        i.putExtra("assistanceRequest", assistanceRequest.toJson());
+        i.putExtra("assistanceRequestId", assistanceRequest.getId());
+        i.putExtra("flag",AssistanceRequest.FLAG_ESTIMATE_REQUEST);
         startActivity(i);
     }
 

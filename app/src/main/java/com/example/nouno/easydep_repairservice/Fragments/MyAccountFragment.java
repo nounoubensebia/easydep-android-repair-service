@@ -19,6 +19,7 @@ import com.example.nouno.easydep_repairservice.Data.RepairService;
 import com.example.nouno.easydep_repairservice.DialogUtils;
 import com.example.nouno.easydep_repairservice.QueryUtils;
 import com.example.nouno.easydep_repairservice.R;
+import com.example.nouno.easydep_repairservice.Utils;
 import com.example.nouno.easydep_repairservice.exceptions.ConnectionProblemException;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -39,10 +40,7 @@ public class MyAccountFragment extends Fragment {
     }
     private void getRepairService ()
     {
-        repairService = new RepairService(7,"Zerhouni","Mokhtar","05489789",70,repairService.AVAILABLE,new Position(36.56,3.456,"Cité Zerhouni Mokhtar"));
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-        repairService = RepairService.fromJson(sharedPref.getString("repairService",repairService.toJson()));
-        repairService.setPosition(new Position(36.56,3.456,"Cité Zerhouni Mokhtar"));
+        repairService=Utils.getLoggedRepairService(getActivity().getApplicationContext());
     }
 
     @Override

@@ -193,51 +193,64 @@ public class AssistanceRequest {
             for (int i = 0;i<jsonArray.length();i++)
             {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                long assistanceRequestId = jsonObject.getLong("id");
-                JSONObject carOnwerJsonObject = jsonObject.getJSONObject("car_owner");
-                long carOwnerid = carOnwerJsonObject.getLong("id");
-                String firstname = carOnwerJsonObject.getString("first_name");
-                String lastname = carOnwerJsonObject.getString("last_name");
-                CarOwner carOwner = new CarOwner(carOwnerid,firstname,lastname);
-                JSONObject departureJsonObject = jsonObject.getJSONObject("departure");
-                double latitude = departureJsonObject.getDouble("latitude");
-                double longitude = departureJsonObject.getDouble("longitude");
-                String locationName = departureJsonObject.getString("location_name");
-                Position departure = new Position(latitude,longitude,locationName);
-                JSONObject toDepartureJsonObject = jsonObject.getJSONObject("to_departure");
-                int distance = toDepartureJsonObject.getInt("distance");
-                int duration = toDepartureJsonObject.getInt("duration");
-                Path toDeparture = new Path(distance,duration);
-                long time = jsonObject.getLong("time");
-                AssistanceRequest assistanceRequest = new AssistanceRequest(assistanceRequestId,carOwner,departure,toDeparture,time);
-                if (jsonObject.has("destination"))
-                {
-                    JSONObject destinationJsonObject = jsonObject.getJSONObject("destination");
-                    latitude = destinationJsonObject.getDouble("latitude");
-                    longitude =destinationJsonObject.getDouble("longitude");
-                    locationName = destinationJsonObject.getString("location_name");
-                    Position destination = new Position(latitude,longitude,locationName);
-                    JSONObject toDestinationJsonObject = jsonObject.getJSONObject("to_destination");
-                    distance = toDestinationJsonObject.getInt("distance");
-                    duration = toDestinationJsonObject.getInt("duration");
-                    Path toDestinaion = new Path(distance,duration);
-                    assistanceRequest.setDestination(destination);
-                    assistanceRequest.setToDestination(toDestinaion);
-                }
-                boolean heavy = jsonObject.getBoolean("heavy");
-                assistanceRequest.setHeavy(heavy);
-                if (heavy)
-                {
-                    assistanceRequest.setLength((float)jsonObject.getDouble("length"));
-                    assistanceRequest.setWeight((float)jsonObject.getDouble("weight"));
-                }
-                assistanceRequests.add(assistanceRequest);
+                assistanceRequests.add(parseJson(jsonObject));
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return assistanceRequests;
+    }
+
+    public static AssistanceRequest parseJson (JSONObject jsonObject)
+    {
+
+        long assistanceRequestId = 0;
+        try {
+            assistanceRequestId = jsonObject.getLong("id");
+
+        JSONObject carOnwerJsonObject = jsonObject.getJSONObject("car_owner");
+        long carOwnerid = carOnwerJsonObject.getLong("id");
+        String firstname = carOnwerJsonObject.getString("first_name");
+        String lastname = carOnwerJsonObject.getString("last_name");
+        CarOwner carOwner = new CarOwner(carOwnerid,firstname,lastname);
+        JSONObject departureJsonObject = jsonObject.getJSONObject("departure");
+        double latitude = departureJsonObject.getDouble("latitude");
+        double longitude = departureJsonObject.getDouble("longitude");
+        String locationName = departureJsonObject.getString("location_name");
+        Position departure = new Position(latitude,longitude,locationName);
+        JSONObject toDepartureJsonObject = jsonObject.getJSONObject("to_departure");
+        int distance = toDepartureJsonObject.getInt("distance");
+        int duration = toDepartureJsonObject.getInt("duration");
+        Path toDeparture = new Path(distance,duration);
+        long time = jsonObject.getLong("time");
+        AssistanceRequest assistanceRequest = new AssistanceRequest(assistanceRequestId,carOwner,departure,toDeparture,time);
+        if (jsonObject.has("destination"))
+        {
+            JSONObject destinationJsonObject = jsonObject.getJSONObject("destination");
+            latitude = destinationJsonObject.getDouble("latitude");
+            longitude =destinationJsonObject.getDouble("longitude");
+            locationName = destinationJsonObject.getString("location_name");
+            Position destination = new Position(latitude,longitude,locationName);
+            JSONObject toDestinationJsonObject = jsonObject.getJSONObject("to_destination");
+            distance = toDestinationJsonObject.getInt("distance");
+            duration = toDestinationJsonObject.getInt("duration");
+            Path toDestinaion = new Path(distance,duration);
+            assistanceRequest.setDestination(destination);
+            assistanceRequest.setToDestination(toDestinaion);
+        }
+        boolean heavy = jsonObject.getBoolean("heavy");
+        assistanceRequest.setHeavy(heavy);
+        if (heavy)
+        {
+            assistanceRequest.setLength((float)jsonObject.getDouble("length"));
+            assistanceRequest.setWeight((float)jsonObject.getDouble("weight"));
+        }
+        return assistanceRequest;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public boolean isHeavy() {
@@ -333,4 +346,6 @@ public class AssistanceRequest {
         Gson gson = new Gson();
         return gson.toJson(this);
     }
+
+
 }

@@ -1,6 +1,7 @@
 package com.example.nouno.easydep_repairservice.Activities;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -28,6 +29,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -38,6 +42,7 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity implements 
     private AssistanceRequest assistanceRequest;
     private ProgressDialog progressDialog;
     private GoogleMap map;
+    int flag;
     private AssistanceRequestInfoActivity assistanceRequestInfoActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,16 +54,25 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity implements 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         retreiveData();
         hideTitleText();
-        displayData();
+        //displayData();
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
 
     private void retreiveData ()
     {
+
         Bundle extras = getIntent().getExtras();
-        Gson gson = new Gson();
-        assistanceRequest = gson.fromJson(extras.getString("assistanceRequest"),AssistanceRequest.class);
+
+        long id = extras.getLong("assistanceRequestId");
+        flag = extras.getInt("flag");
+        LinkedHashMap<String,String>map = new LinkedHashMap<>();
+        map.put("assistance_request_id",id+"");
+        map.put("action","get_repair_service_request");
+        GetRequestData getRequestData = new GetRequestData();
+        getRequestData.execute(map);
+        NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.cancel((int)id);
     }
 
     @SuppressLint("NewApi")
@@ -116,11 +130,11 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity implements 
         }
         TextView writeEstimateText = (TextView)findViewById(R.id.write_estimate_text);
         TextView cancelRequestText = (TextView)findViewById(R.id.cancel_request_text);
-        if (assistanceRequest.getFlag()==AssistanceRequest.FLAG_IN_QUEUE)
+        if (flag==AssistanceRequest.FLAG_IN_QUEUE)
         {
             writeEstimateText.setVisibility(View.GONE);
         }
-        if (assistanceRequest.getFlag()==AssistanceRequest.FLAG_INTERVENTION)
+        if (flag==AssistanceRequest.FLAG_INTERVENTION)
         {
             //writeEstimateText.setVisibility(View.GONE);
             writeEstimateText.setText("Terminer intervention");
@@ -128,7 +142,7 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity implements 
             writeEstimateText.setCompoundDrawablesWithIntrinsicBounds(null,drawable,null,null);
             cancelRequestText.setText("Annuler intervention");
         }
-        if (assistanceRequest.getFlag()==AssistanceRequest.FLAG_ESTIMATE_REQUEST)
+        if (flag==AssistanceRequest.FLAG_ESTIMATE_REQUEST)
         {
             writeEstimateText.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -195,6 +209,12 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity implements 
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         map.getUiSettings().setMapToolbarEnabled(false);
         map.getUiSettings().setAllGesturesEnabled(false);
+
+
+    }
+
+    private void markUser()
+    {
         double latitudecenter = assistanceRequest.getUserPositon().getLatitude();
         double longitudecenter = assistanceRequest.getUserPositon().getLongitude();
         LatLng centerauto=new LatLng(latitudecenter,longitudecenter);
@@ -227,6 +247,42 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity implements 
             progressDialog.dismiss();
             startMainActivity();
             finish();
+        }
+    }
+
+    private class GetRequestData extends AsyncTask<Map<String,String>,Void,String>
+    {
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = (ProgressDialog)DialogUtils.buildProgressDialog("Récupération des données",assistanceRequestInfoActivity);
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Map<String, String>... params) {
+           String response = null;
+            try {
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.SEND_REQUEST_URL,params[0]);
+            } catch (ConnectionProblemException e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            try {
+                JSONObject jsonObject = new JSONObject(s);
+                assistanceRequest = AssistanceRequest.parseJson(jsonObject);
+                displayData();
+                markUser();
+                progressDialog.dismiss();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 

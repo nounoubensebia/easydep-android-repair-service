@@ -1,10 +1,14 @@
 package com.example.nouno.easydep_repairservice.Fragments;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +27,7 @@ import com.example.nouno.easydep_repairservice.Data.RepairService;
 import com.example.nouno.easydep_repairservice.ListAdapters.QueueElementAdapter;
 import com.example.nouno.easydep_repairservice.QueryUtils;
 import com.example.nouno.easydep_repairservice.R;
+import com.example.nouno.easydep_repairservice.Utils;
 import com.example.nouno.easydep_repairservice.exceptions.ConnectionProblemException;
 
 import java.util.ArrayList;
@@ -44,10 +49,23 @@ public class QueueFragment extends Fragment {
     private TextView noConnectionText;
     private SwipeRefreshLayout swipeRefreshLayout;
     private View fab;
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            getQueueElements();
+        }
+    };
+
+
     public QueueFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver,new IntentFilter("new_queue_element"));
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,7 +103,7 @@ public class QueueFragment extends Fragment {
 
     private void getRepairService ()
     {
-        repairService = new RepairService(7,"Bensebia","Noureddine");
+        repairService = Utils.getLoggedRepairService(getActivity().getApplicationContext());
     }
 
     private void getQueueElements ()
@@ -112,7 +130,8 @@ public class QueueFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AssistanceRequest assistanceRequest = queueElements.get(position);
                 Intent i = new Intent(getContext(),AssistanceRequestInfoActivity.class);
-                i.putExtra("assistanceRequest",assistanceRequest.toJson());
+                i.putExtra("assistanceRequestId",assistanceRequest.getId());
+                i.putExtra("flag",assistanceRequest.getFlag());
                 startActivity(i);
             }
         });

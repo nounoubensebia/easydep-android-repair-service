@@ -19,6 +19,7 @@ import com.example.nouno.easydep_repairservice.DialogUtils;
 import com.example.nouno.easydep_repairservice.OnButtonClickListener;
 import com.example.nouno.easydep_repairservice.QueryUtils;
 import com.example.nouno.easydep_repairservice.R;
+import com.example.nouno.easydep_repairservice.Utils;
 import com.example.nouno.easydep_repairservice.exceptions.ConnectionProblemException;
 import com.google.gson.Gson;
 
@@ -49,7 +50,7 @@ public class CreateAssistanceRequestActivity extends AppCompatActivity {
         assistanceRequest = gson.fromJson(json,AssistanceRequest.class);
         }
         else assistanceRequest = new AssistanceRequest();
-        repairService = new RepairService(7,"Bensebia","Noureddine");
+        repairService = Utils.getLoggedRepairService(getApplicationContext());
 
     }
 
