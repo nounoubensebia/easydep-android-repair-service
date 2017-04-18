@@ -102,4 +102,5 @@
     <string name="pas_de_compte">Vous n\'avez pas de compte ?</string>
     <string name="inscrivez_vous">Inscrivez vous !</string>
     <string name="comment_vous_appelez_vous">Comment vous appeler vous ?</string>
+    <string name="no_comments">Aucun avis pour le moment</string>
 </resources>
