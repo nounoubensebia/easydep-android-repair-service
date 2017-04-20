@@ -143,7 +143,11 @@ public class RepairService extends Person {
 
             int status = jsonObject.getInt("available");
             String phoneNumber = jsonObject.getString("phone_number");
-            repairService = new RepairService(id,firstname,lastname,phoneNumber,price,status,email,null);
+            Double latitude = jsonObject.getDouble("latitude");
+            Double longitude = jsonObject.getDouble("longitude");
+            String placeName = jsonObject.getString("place_name");
+            Position position = new Position(latitude,longitude,placeName);
+            repairService = new RepairService(id,firstname,lastname,phoneNumber,price,status,email,position);
         } catch (JSONException e) {
             e.printStackTrace();
         }

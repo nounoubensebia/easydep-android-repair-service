@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -22,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     MyAccountFragment myAccountFragment;
     MyRequestsFragment myRequestsFragment;
     StatisticsFragment statisticsFragment;
+    Menu menu;
+    private int selectedMenu;
     View content;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -31,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
             //getSupportActionBar().setShowHideAnimationEnabled(false);
             switch (item.getItemId()) {
                 case R.id.navigation_my_account:
+
+                    menu.findItem(R.id.refrech_item).setVisible(true);
                     content.setVisibility(View.VISIBLE);
                     getSupportActionBar().setTitle("Mon compte");
                     //getSupportActionBar().hide();
@@ -43,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().remove(statisticsFragment).commitAllowingStateLoss();
                     return true;
                 case R.id.navigation_lists:
+
+                    menu.findItem(R.id.refrech_item).setVisible(false);
+
                     getSupportActionBar().setElevation(0);
                     //getSupportActionBar().show();
                     getSupportActionBar().setTitle("Mes demandes");
@@ -54,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().remove(statisticsFragment).commitAllowingStateLoss();
                     return true;
                 case R.id.navigation_statistics:
+
+
+                    menu.findItem(R.id.refrech_item).setVisible(false);
+
                     getSupportActionBar().setTitle("Mes statistiques");
                     getSupportActionBar().setElevation(12);
                     getSupportActionBar().show();
@@ -72,6 +84,25 @@ public class MainActivity extends AppCompatActivity {
     };
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.account_menu,menu);
+        this.menu=menu;
+        menu.findItem(R.id.refrech_item).setVisible(false);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId()==R.id.refrech_item)
+        {
+            myAccountFragment.getInfo();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -80,11 +111,11 @@ public class MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navigation.getMenu().getItem(1).setChecked(true);
         Bundle extras = getIntent().getExtras();
-
+        //menu.findItem(R.id.refrech_item).setVisible(false);
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setShowHideAnimationEnabled(true);
         getSupportActionBar().setTitle("Mes demandes");
-
+        selectedMenu=1;
         myRequestsFragment = new MyRequestsFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.content, myRequestsFragment).commit();
         if (myAccountFragment != null)
