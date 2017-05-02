@@ -47,9 +47,11 @@
             >
 
             <EditText
-
+                android:textColor="@android:color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColorHighlight="@android:color/white"
+                android:textColorHint="@android:color/white"
                 android:hint="Email"
                 android:inputType="textEmailAddress" />
 

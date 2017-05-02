@@ -26,17 +26,17 @@ import java.util.regex.Pattern;
  */
 
 public class QueryUtils {
-
-    public static final String SEND_REQUEST_URL = "http://192.168.1.5/EasyDep/send_request.php";
-    public static final String GET_REQUESTS =  "get_repair_service_requests";
-    public static final String GET_QUEUE_ELEMENTS = "get_repair_service_queue_elements";
+    public static final String PATH = "http://192.168.1.12/EasyDep/";
+    public static  String SEND_REQUEST_URL = PATH+"send_request.php";
+    public static  final String GET_REQUESTS =  "get_repair_service_requests";
+    public static  final String GET_QUEUE_ELEMENTS = "get_repair_service_queue_elements";
     public static final String GET_PLACE_POSITION_URL = "https://maps.googleapis.com/maps/api/place/details/json?";
     public static final String GET_PLACE_PREDICTIONS_URL ="https://maps.googleapis.com/maps/api/place/autocomplete/json?";
-    public static final String GET_COMMENTS_URL = "http://192.168.1.5/EasyDep/comment.php";
+    public static final String GET_COMMENTS_URL = PATH+"comment.php";
     public static final String CANCEL_REQUEST_ACTION = "cancel_request_repair_service";
     public static final String SEND_ESTIMATE_ACTION = "send_estimate";
     public static final String CONNECTION_PROBLEM = "connection problem";
-    public static final String ACCOUNT_URL = "http://192.168.1.5/EasyDep/repair_service_account_api";
+    public static final String ACCOUNT_URL = PATH+"repair_service_account_api.php";
     public static final String SIGNUP_ACTION = "signup";
 
     public static String makeHttpPostRequest (String urlString,Map<String,String> parameters) throws ConnectionProblemException

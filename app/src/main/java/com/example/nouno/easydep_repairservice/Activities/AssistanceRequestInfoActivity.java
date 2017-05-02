@@ -1,8 +1,10 @@
 package com.example.nouno.easydep_repairservice.Activities;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.nouno.easydep_repairservice.Data.AssistanceRequest;
 import com.example.nouno.easydep_repairservice.DialogUtils;
+import com.example.nouno.easydep_repairservice.OnButtonClickListener;
 import com.example.nouno.easydep_repairservice.QueryUtils;
 import com.example.nouno.easydep_repairservice.R;
 import com.example.nouno.easydep_repairservice.exceptions.ConnectionProblemException;
@@ -138,6 +141,12 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity implements 
         {
             //writeEstimateText.setVisibility(View.GONE);
             writeEstimateText.setText("Terminer intervention");
+            writeEstimateText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    completeIntervention();
+                }
+            });
             drawable = getDrawable(R.drawable.ic_intervention_finished_40dp);
             writeEstimateText.setCompoundDrawablesWithIntrinsicBounds(null,drawable,null,null);
             cancelRequestText.setText("Annuler intervention");
@@ -223,6 +232,15 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity implements 
 
     }
 
+    private void completeIntervention()
+    {
+        LinkedHashMap<String,String> map = new LinkedHashMap<>();
+        map.put("action","complete_intervention");
+        map.put("assistance_request_id",assistanceRequest.getId()+"");
+        CompleteIntervention completeIntervention = new CompleteIntervention();
+        completeIntervention.execute(map);
+    }
+
     private class CancelRequestTask extends AsyncTask<Map<String,String>,Void,String>
     {
         @Override
@@ -249,6 +267,8 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity implements 
             finish();
         }
     }
+
+
 
     private class GetRequestData extends AsyncTask<Map<String,String>,Void,String>
     {
@@ -284,6 +304,41 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity implements 
             }
 
         }
+    }
+
+    private class CompleteIntervention extends AsyncTask<Map<String,String>,Void,String>
+    {
+        @Override
+        protected void onPreExecute() {
+
+            progressDialog = (ProgressDialog)DialogUtils.buildProgressDialog("Veuillez patienter",assistanceRequestInfoActivity);
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Map<String, String>... params) {
+            String response = null;
+            try {
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.SEND_REQUEST_URL,params[0]);
+            } catch (ConnectionProblemException e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+                Dialog dialog = DialogUtils.buildClickableInfoDialog("Intervention terminée", "", assistanceRequestInfoActivity, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startMainActivity();
+                    }
+                });
+            dialog.show();
+        }
+
+
     }
 
     private void startMainActivity()

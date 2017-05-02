@@ -51,4 +51,33 @@ public class DialogUtils {
         dialog.setMessage(msg);
         return dialog;
     }
+    public static  Dialog buildInfoDialog (String title, String msg, Context context)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(msg).setTitle(title);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+
+        return builder.create();
+
+    }
+
+    public static  Dialog buildClickableInfoDialog(String title, String msg, Context context, final DialogInterface.OnClickListener clickListener)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(msg).setTitle(title);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                clickListener.onClick(dialog,id);
+            }
+        });
+
+        return builder.create();
+
+    }
+
+
 }
