@@ -14,8 +14,51 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ToolbarTheme"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        android:theme="@style/ToolbarTheme"></android.support.v7.widget.Toolbar>
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/user_position_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:layout_marginTop="16dp">
+        <LinearLayout
+
+            android:layout_marginLeft="16dp"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/aprox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Données de localisation"
+                android:textSize="20sp" />
+            <TextView
+                android:textSize="16sp"
+                android:id="@+id/user_position_text"
+                android:layout_marginBottom="16dp"
+                android:layout_width="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:layout_height="wrap_content"
+                android:text="Localisation en cours"/>
+
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/ic_my_position" />
+
+    </RelativeLayout>
     <ListView
         android:id="@+id/list"
         android:layout_width="wrap_content"

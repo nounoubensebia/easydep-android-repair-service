@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.nouno.easydep_repairservice">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-feature
@@ -24,9 +25,7 @@
 
         <activity
             android:name=".Activities.MainActivity"
-            android:label="EasyDep">
-
-        </activity>
+            android:label="EasyDep" />
         <activity
             android:name=".Activities.CreateAssistanceRequestActivity"
             android:label="Nouvelle Demande"
@@ -55,23 +54,35 @@
             android:label="Devis"
             android:noHistory="true"
             android:theme="@style/SignupTheme" />
-        <activity android:name=".Activities.LoginActivity"
+        <activity
+            android:name=".Activities.LoginActivity"
             android:theme="@style/SignupTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            </activity>
-        <activity android:name=".Activities.Signup1Activity" android:theme="@style/SignupTheme" />
-        <activity android:name=".Activities.Signup2Activity" android:theme="@style/SignupTheme"/>
-        <activity android:name=".Activities.Signup3Activity" android:theme="@style/SignupTheme"/>
-        <activity android:name=".Activities.Signup4Activity" android:theme="@style/SignupTheme"></activity>
+        </activity>
+        <activity
+            android:name=".Activities.Signup1Activity"
+            android:theme="@style/SignupTheme" />
+        <activity
+            android:name=".Activities.Signup2Activity"
+            android:theme="@style/SignupTheme" />
+        <activity
+            android:name=".Activities.Signup3Activity"
+            android:theme="@style/SignupTheme" />
+        <activity
+            android:name=".Activities.Signup4Activity"
+            android:theme="@style/SignupTheme" />
+
         <service android:name=".Services.FireBaseMessangingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <activity android:name=".Activities.PriceActivity"></activity>
     </application>
 
 </manifest>

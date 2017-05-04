@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/greenPrimary">
     <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/signup_completed_layout"
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:gravity="center_vertical|center_horizontal"
@@ -14,10 +16,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
+            android:fontFamily="sans-serif-light"
             android:drawablePadding="8dp"
             android:drawableTop="@drawable/ic_check_circle_white_24dp"
             android:text="Inscription terminée"/>
         <TextView
+            android:fontFamily="sans-serif-light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
@@ -26,16 +30,36 @@
             android:gravity="center_horizontal"
             android:layout_marginRight="16dp"
             android:text="Vous pouvez maintenent recevoir les demandes des automobilistes."/>
+        <TextView
+            android:visibility="visible"
+
+            android:id="@+id/fab"
+            android:fontFamily="sans-serif-light"
+            android:text="Lancer l'application"
+            android:textAllCaps="false"
+            android:layout_marginTop="24dp"
+            android:textSize="24sp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/signup_underway_layout"
+        android:layout_height="wrap_content">
+        <TextView
+            android:gravity="center"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:fontFamily="sans-serif-light"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:text="Veuillez patienter Inscription en cours ..."
+            android:textSize="24sp"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:visibility="visible"
-        android:layout_width="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="16dp"
-        app:fabSize="normal"
-        app:backgroundTint="#FFF"
-        android:src="@drawable/ic_chevron_right_24dp"
-        android:layout_height="wrap_content" />
+
 </android.support.design.widget.CoordinatorLayout>

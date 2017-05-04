@@ -27,7 +27,8 @@ import java.util.regex.Pattern;
 
 public class QueryUtils {
     public static final String PATH = "http://192.168.1.12/EasyDep/";
-    public static  String SEND_REQUEST_URL = PATH+"send_request.php";
+    public static  String SEND_REQUEST_URL = PATH+"requests.php";
+    public static final String GET_USER_LOCATION_NAME_URL = "https://maps.googleapis.com/maps/api/geocode/json?&key=AIzaSyAqQHxLWPTvFHDvz5WUwuNAjTa0UuSHbmk&language=fr-FR&";
     public static  final String GET_REQUESTS =  "get_repair_service_requests";
     public static  final String GET_QUEUE_ELEMENTS = "get_repair_service_queue_elements";
     public static final String GET_PLACE_POSITION_URL = "https://maps.googleapis.com/maps/api/place/details/json?";

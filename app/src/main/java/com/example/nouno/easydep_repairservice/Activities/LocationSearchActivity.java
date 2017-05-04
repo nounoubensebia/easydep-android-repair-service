@@ -1,7 +1,12 @@
 package com.example.nouno.easydep_repairservice.Activities;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
@@ -12,40 +17,187 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
-import com.example.nouno.easydep_repairservice.Activities.CreateAssistanceRequestActivity;
 import com.example.nouno.easydep_repairservice.Data.AssistanceRequest;
 import com.example.nouno.easydep_repairservice.Data.Position;
+import com.example.nouno.easydep_repairservice.Data.RepairService;
 import com.example.nouno.easydep_repairservice.Data.SearchSuggestion;
 import com.example.nouno.easydep_repairservice.ListAdapters.SearchSuggestionAdapter;
 import com.example.nouno.easydep_repairservice.QueryUtils;
 import com.example.nouno.easydep_repairservice.R;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-public class LocationSearchActivity extends AppCompatActivity {
+public class LocationSearchActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,LocationListener {
     private ListView listView;
     private AssistanceRequest detailedAssistanceRequest;
+    private RepairService repairService;
+    private View userPositionLayout;
     private boolean departure;
+    private Position userPosition;
+    private TextView userLocationText;
+    private GoogleApiClient googleApiClient;
+    private LocationRequest locationRequest;
+    private static final int MY_PERMISSIONS_REQUEST_FINE_LOCATION = 111;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_search);
+        userPositionLayout = findViewById(R.id.user_position_layout);
+        userLocationText = (TextView)findViewById(R.id.user_position_text);
         Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         listView = (ListView)findViewById(R.id.list);
+        googleApiClient = new GoogleApiClient.Builder(this).addApi(LocationServices.API).addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
+        googleApiClient.connect();
         retreiveData();
+        if (repairService!=null)
+        {
+            userPositionLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     private void retreiveData ()
     {
         Bundle bundle = getIntent().getExtras();
         Gson gson = new Gson();
-        detailedAssistanceRequest = gson.fromJson(bundle.getString("assistanceRequest"),AssistanceRequest.class);
-        departure = bundle.getBoolean("departure");
+        if (bundle.containsKey("assistanceRequest"))
+        {
+            detailedAssistanceRequest = gson.fromJson(bundle.getString("assistanceRequest"),AssistanceRequest.class);
+            departure = bundle.getBoolean("departure");
+        }
+        else
+        {
+            if (bundle.containsKey("repairService"))
+            {
+                repairService = gson.fromJson(bundle.getString("repairService"),RepairService.class);
+            }
+        }
+
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(1000);
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+
+            ActivityCompat.requestPermissions(
+                    this, // Activity
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_FINE_LOCATION);
+            googleApiClient.disconnect();
+            return;
+
+        }
+
+
+        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Double latitude =location.getLatitude();
+        Double longitude = location.getLongitude();
+        userPosition = new Position(latitude,longitude,null);
+        GetUserPositionTask getUserPositionTask = new GetUserPositionTask();
+        getUserPositionTask.execute(userPosition);
+        googleApiClient.disconnect();
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_FINE_LOCATION: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    googleApiClient.connect();
+
+
+                } else {
+
+
+                }
+                return;
+            }
+        }
+    }
+
+    public class GetUserPositionTask extends AsyncTask<Position,Void,Position>
+    {
+
+        @Override
+        protected Position doInBackground(Position... params) {
+            LinkedHashMap map = new LinkedHashMap();
+            Position position = null;
+            map.put("latlng",params[0].getLatitude()+","+params[0].getLongitude());
+            String response = QueryUtils.makeHttpGetRequest(QueryUtils.GET_USER_LOCATION_NAME_URL,map);
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray resultes = jsonObject.getJSONArray("results");
+                JSONObject result = resultes.getJSONObject(0);
+                String loc = result.getString("formatted_address");
+                String[] tab = loc.split(", Algérie");
+                String location =tab[0];
+                position =params[0];
+                position.setLocationName(location);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return position;
+
+        }
+
+        @Override
+        protected void onPostExecute(final Position position) {
+            userPosition = position;
+            userLocationText.setText(position.getLocationName());
+            userPositionLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startAskingActivity(position);
+                }
+            });
+        }
     }
 
     @Override
@@ -56,7 +208,11 @@ public class LocationSearchActivity extends AppCompatActivity {
         SearchView searchView = (SearchView) menuItem.getActionView();
 
         searchView.setFocusable(true);
-        searchView.setQueryHint("Lieu de recherche");
+
+        if (repairService!=null)
+            searchView.setQueryHint("Lieu de recherche");
+        else
+            searchView.setQueryHint("Indiquez votre position actuelle");
         searchView.setIconified(false);
         searchView.requestFocusFromTouch();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -119,12 +275,28 @@ public class LocationSearchActivity extends AppCompatActivity {
     }
     private void startAskingActivity(Position position)
     {
-        if (departure)
-            detailedAssistanceRequest.setUserPositon(position);
+        if (detailedAssistanceRequest!=null)
+        {
+            if (departure)
+                detailedAssistanceRequest.setUserPositon(position);
+            else
+                detailedAssistanceRequest.setDestination(position);
+            Intent i = new Intent(this, CreateAssistanceRequestActivity.class);
+            i.putExtra("assistanceRequest",detailedAssistanceRequest.toJson());
+            startActivity(i);
+        }
         else
-            detailedAssistanceRequest.setDestination(position);
-        Intent i = new Intent(this, CreateAssistanceRequestActivity.class);
-        i.putExtra("assistanceRequest",detailedAssistanceRequest.toJson());
-        startActivity(i);
+        {
+            Bundle extras = getIntent().getExtras();
+            if (extras.containsKey("password"))
+            {
+                Intent i = new Intent(this,Signup4Activity.class);
+                repairService.setPosition(position);
+                i.putExtra("repairService",repairService.toJson());
+                i.putExtra("password",extras.getString("password"));
+                startActivity(i);
+            }
+
+        }
     }
 }
