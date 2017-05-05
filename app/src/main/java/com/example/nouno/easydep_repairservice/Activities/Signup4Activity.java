@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import com.example.nouno.easydep_repairservice.Data.RepairService;
 import com.example.nouno.easydep_repairservice.QueryUtils;
 import com.example.nouno.easydep_repairservice.R;
+import com.example.nouno.easydep_repairservice.Services.LocationUpdateService;
 import com.example.nouno.easydep_repairservice.exceptions.ConnectionProblemException;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -28,6 +29,7 @@ public class Signup4Activity extends AppCompatActivity {
     private View signupCompletedLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup4);
         signupUnderwayLayout = findViewById(R.id.signup_underway_layout);
@@ -103,6 +105,8 @@ public class Signup4Activity extends AppCompatActivity {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("repairService",repairService.toJson());
+
+
         editor.commit();
     }
 

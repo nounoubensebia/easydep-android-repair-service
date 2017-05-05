@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.nouno.easydep_repairservice.Activities.MainActivity;
 import com.example.nouno.easydep_repairservice.Data.Comment;
 import com.example.nouno.easydep_repairservice.Data.RepairService;
+import com.example.nouno.easydep_repairservice.Data.Statistic;
 import com.example.nouno.easydep_repairservice.ListAdapters.CommentAdapter;
 import com.example.nouno.easydep_repairservice.QueryUtils;
 import com.example.nouno.easydep_repairservice.R;
@@ -32,6 +33,7 @@ import java.util.Map;
 public class StatisticsFragment extends Fragment {
     MainActivity mainActivity;
     ArrayList<Comment> comments;
+    Statistic statistic;
     ListView listView;
     ProgressBar progressBar;
     RepairService repairService;
@@ -53,7 +55,7 @@ public class StatisticsFragment extends Fragment {
         listView = (ListView)view.findViewById(R.id.list);
         repairService = Utils.getLoggedRepairService(getActivity().getApplicationContext());
         progressBar = (ProgressBar)view.findViewById(R.id.progressBar);
-        getComments();
+        getData();
         return view;
     }
 
@@ -68,6 +70,13 @@ public class StatisticsFragment extends Fragment {
 
     private void displayData (View view)
     {
+
+        TextView numberOfInterventionsThisWeekText = (TextView)view.findViewById(R.id.intervention_in_week_text);
+        TextView averageInterventionsInWeekText = (TextView)view.findViewById(R.id.average_interventions_per_week_number);
+        TextView totalInterventionsText = (TextView)view.findViewById(R.id.total_interventions_number);
+        numberOfInterventionsThisWeekText.setText(statistic.getNumberOfInterventionsThisWeek()+"");
+        averageInterventionsInWeekText.setText(statistic.getAverageInterventionsInWeek()+"");
+        totalInterventionsText.setText(statistic.getTotalInterventions()+"");
         if (comments.size()==0)
         {
             View commentsLayout = view.findViewById(R.id.comments_layout);
@@ -85,13 +94,16 @@ public class StatisticsFragment extends Fragment {
 
     }
 
-    private void getComments()
+    private void getData()
     {
         LinkedHashMap<String,String> map = new LinkedHashMap<>();
         map.put("action","get_comments_for_repair_service");
         map.put("repairServiceId",repairService.getId()+"");
-        GetCommentsTask getCommentsTask = new GetCommentsTask();
-        getCommentsTask.execute(map);
+        LinkedHashMap<String,String> map1 = new LinkedHashMap<>();
+        map1.put("action","get_statistics");
+        map1.put("repair_service_id",repairService.getId()+"");
+        GetDataTask getDataTask = new GetDataTask();
+        getDataTask.execute(map,map1);
     }
 
     private void populateListView ()
@@ -101,7 +113,7 @@ public class StatisticsFragment extends Fragment {
         justifyListViewHeightBasedOnChildren(listView);
     }
 
-    private class GetCommentsTask extends AsyncTask<Map<String,String>,Void,String>
+    private class GetDataTask extends AsyncTask<Map<String,String>,Void,String>
     {
 
         @Override
@@ -115,6 +127,9 @@ public class StatisticsFragment extends Fragment {
             String response = null;
             try {
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.GET_COMMENTS_URL,params[0]);
+                comments = Comment.parseJson(response);
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[1]);
+                statistic = Statistic.parseJson(response);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
             }
@@ -123,7 +138,6 @@ public class StatisticsFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String s) {
-            comments = Comment.parseJson(s);
             displayData(getView());
             populateListView();
             progressBar.setVisibility(View.GONE);

@@ -117,10 +117,8 @@ public class QueueFragment extends Fragment {
 
     private void populateQueueElementList (View view, final ArrayList<QueueElement> queueElements)
     {
-        //QueueElement queueElement = queueElements.get(0);
-        //queueElement.setPosition(0);
-        //queueElement = queueElements.get(1);
-        //queueElement.setPosition(1);
+        if (view !=null)
+        {
         ListView listView = (ListView)view.findViewById(R.id.list);
         QueueElementAdapter queueElementAdapter = new QueueElementAdapter(getContext(),queueElements);
         listView.setAdapter(queueElementAdapter);
@@ -134,7 +132,7 @@ public class QueueFragment extends Fragment {
                 i.putExtra("flag",assistanceRequest.getFlag());
                 startActivity(i);
             }
-        });
+        });}
     }
 
     public void enter(final View view) {
@@ -204,7 +202,7 @@ public class QueueFragment extends Fragment {
         protected String doInBackground(Map<String, String>... params) {
             String response = null;
             try {
-                response = QueryUtils.makeHttpPostRequest(QueryUtils.SEND_REQUEST_URL,params[0]);
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 response=QueryUtils.CONNECTION_PROBLEM;
                 e.printStackTrace();

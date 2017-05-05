@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import com.example.nouno.easydep_repairservice.Data.RepairService;
 import com.example.nouno.easydep_repairservice.QueryUtils;
 import com.example.nouno.easydep_repairservice.R;
+
 import com.example.nouno.easydep_repairservice.exceptions.ConnectionProblemException;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -55,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
     }
 
     private void checkIfConnected ()
@@ -114,6 +116,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("repairService",repairService.toJson());
+
         editor.commit();
     }
 }

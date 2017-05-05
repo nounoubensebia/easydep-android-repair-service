@@ -30,4 +30,18 @@ public class Position {
     public void setLocationName(String locationName) {
         this.locationName = locationName;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Position)
+        {
+            Position position = (Position) obj;
+            if (position.getLatitude()==latitude&&position.getLongitude()==longitude)
+            {
+                return true;
+            }
+        }
+        return false;
+
+    }
 }

@@ -129,7 +129,7 @@ public class RequestsListFragment extends Fragment {
         protected String doInBackground(Map<String, String>... params) {
             String response = null;
             try {
-                response = QueryUtils.makeHttpPostRequest(QueryUtils.SEND_REQUEST_URL, params[0]);
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL, params[0]);
             } catch (ConnectionProblemException e) {
                 response = QueryUtils.CONNECTION_PROBLEM;
             }

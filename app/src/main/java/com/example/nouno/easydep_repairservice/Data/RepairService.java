@@ -1,5 +1,8 @@
 package com.example.nouno.easydep_repairservice.Data;
 
+import android.util.Log;
+
+import com.example.nouno.easydep_repairservice.Utils;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -15,6 +18,7 @@ public class RepairService extends Person {
     private int status;
     private String email;
     private Position position;
+    private boolean automaticLocationDetection=true;
     public static final int NO_PRICE = 99999;
     public static final String NO_PRICE_STRING = "Tarifs non communiqués";
     public static final int NO_DURATION = -1;
@@ -43,7 +47,14 @@ public class RepairService extends Person {
         this.position = position;
     }
 
+    public boolean isAutomaticLocationDetection() {
+        return automaticLocationDetection;
+    }
 
+    public void setAutomaticLocationDetection(boolean automaticLocationDetection) {
+        this.automaticLocationDetection = automaticLocationDetection;
+        Log.i("AUTOLOCATION",automaticLocationDetection+"");
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -132,6 +143,7 @@ public class RepairService extends Person {
 
     public static RepairService parseJson (String json)
     {
+
         RepairService repairService = null;
         try {
             JSONObject jsonObject = new JSONObject(json);

@@ -260,9 +260,11 @@
                     android:text="Ma positon"
                     android:textColor="@android:color/background_dark"
                     android:textSize="16sp" />
+
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:text="Cité zerhouni mokhtar"
+                    android:layout_width="300dp"
+                    android:maxLines="10"
+                    android:text="Cité zerhouni mokhtar (Détection automatique)"
                     android:id="@+id/position_text"
                     android:layout_height="wrap_content" />
             </LinearLayout>

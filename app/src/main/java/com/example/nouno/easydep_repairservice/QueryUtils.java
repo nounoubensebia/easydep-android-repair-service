@@ -26,14 +26,14 @@ import java.util.regex.Pattern;
  */
 
 public class QueryUtils {
-    public static final String PATH = "http://192.168.1.12/EasyDep/";
-    public static  String SEND_REQUEST_URL = PATH+"requests.php";
+    public static final String PATH = "http://192.168.1.4/EasyDep/";
+    public static  String REQUESTS_URL = PATH+"requests.php";
     public static final String GET_USER_LOCATION_NAME_URL = "https://maps.googleapis.com/maps/api/geocode/json?&key=AIzaSyAqQHxLWPTvFHDvz5WUwuNAjTa0UuSHbmk&language=fr-FR&";
     public static  final String GET_REQUESTS =  "get_repair_service_requests";
     public static  final String GET_QUEUE_ELEMENTS = "get_repair_service_queue_elements";
     public static final String GET_PLACE_POSITION_URL = "https://maps.googleapis.com/maps/api/place/details/json?";
     public static final String GET_PLACE_PREDICTIONS_URL ="https://maps.googleapis.com/maps/api/place/autocomplete/json?";
-    public static final String GET_COMMENTS_URL = PATH+"comment.php";
+    public static  String GET_COMMENTS_URL = PATH+"comment.php";
     public static final String CANCEL_REQUEST_ACTION = "cancel_request_repair_service";
     public static final String SEND_ESTIMATE_ACTION = "send_estimate";
     public static final String CONNECTION_PROBLEM = "connection problem";

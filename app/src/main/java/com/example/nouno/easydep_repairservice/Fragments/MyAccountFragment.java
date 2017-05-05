@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.nouno.easydep_repairservice.Activities.LocationSearchActivity;
 import com.example.nouno.easydep_repairservice.Activities.LoginActivity;
 import com.example.nouno.easydep_repairservice.Data.Position;
 import com.example.nouno.easydep_repairservice.Data.RepairService;
@@ -66,6 +67,7 @@ public class MyAccountFragment extends Fragment {
 
     private void displayData (View view)
     {
+        //getRepairService();
         TextView nameText = (TextView)view.findViewById(R.id.name_text);
         TextView phoneText = (TextView)view.findViewById(R.id.phone_text);
         TextView priceText = (TextView)view.findViewById(R.id.price_text);
@@ -74,7 +76,22 @@ public class MyAccountFragment extends Fragment {
         phoneText.setText(repairService.getPhoneNumber());
         priceText.setText(repairService.getPriceString());
         statusText.setText(repairService.getAvailableString());
-        positionText.setText(repairService.getPosition().getLocationName());
+        String s = "";
+        if (repairService.isAutomaticLocationDetection())
+            s="(Détection automatique)";
+        else
+            s="";
+        positionText.setText(repairService.getPosition().getLocationName()+" "+s);
+        View positionsTexts = view.findViewById(R.id.positions_text);
+        positionsTexts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(),LocationSearchActivity.class);
+                i.putExtra("repairService",repairService.toJson());
+                startActivity(i);
+                getActivity().finish();
+            }
+        });
         nameText.setText(repairService.getFullName());
         View logoutLayout = view.findViewById(R.id.logout_layout);
         logoutLayout.setOnClickListener(new View.OnClickListener() {
@@ -150,6 +167,7 @@ public class MyAccountFragment extends Fragment {
     {
         @Override
         protected void onPreExecute() {
+            getRepairService();
             progressBar.setVisibility(View.VISIBLE);
             infoLayout.setVisibility(View.GONE);
         }
@@ -167,7 +185,9 @@ public class MyAccountFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String s) {
+            boolean bool = repairService.isAutomaticLocationDetection();
             repairService = RepairService.parseJson(s);
+            repairService.setAutomaticLocationDetection(bool);
             displayData(getView());
             progressBar.setVisibility(View.GONE);
             infoLayout.setVisibility(View.VISIBLE);

@@ -82,7 +82,12 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".Activities.PriceActivity"></activity>
+        <activity android:name=".Activities.PriceActivity" />
+
+        <service
+            android:name=".Services.LocationUpdateService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
