@@ -101,15 +101,9 @@
                 android:layout_height="wrap_content" />
 
         </RelativeLayout>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Mot de passe oublié ?"
-            android:id="@+id/password_forgotten_button"
-            android:textAllCaps="false"
-            style="?borderlessButtonStyle"/>
+
         <View
+            android:layout_marginTop="16dp"
             android:layout_marginRight="32dp"
             android:layout_marginLeft="32dp"
             android:layout_width="match_parent"

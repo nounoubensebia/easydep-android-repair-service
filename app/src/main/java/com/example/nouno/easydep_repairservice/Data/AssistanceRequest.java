@@ -148,7 +148,7 @@ public class AssistanceRequest {
         double durationInMinutes = toDeparture.getDuration()/60;
         NumberFormat nf = new DecimalFormat("0.#");
         String s = nf.format(durationInMinutes);
-        return ("a "+s+" Minutes de route");
+        return ("à "+s+" Minutes de route");
     }
     public String getDepartureToDestinationString()
     {
@@ -246,6 +246,7 @@ public class AssistanceRequest {
             assistanceRequest.setLength((float)jsonObject.getDouble("length"));
             assistanceRequest.setWeight((float)jsonObject.getDouble("weight"));
         }
+        assistanceRequest.setVehiculeCanMove(jsonObject.getBoolean("vehicule_can_move"));
         return assistanceRequest;
         } catch (JSONException e) {
             e.printStackTrace();
