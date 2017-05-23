@@ -105,4 +105,5 @@
     <string name="no_comments">Aucun avis pour le moment</string>
     <string name="email_already_exists">Un compte avec cet email existe déjà</string>
     <string name="phone_number_already_exists">Un compte avec ce numéro de téléphone existe déjà</string>
+    <string name="login_failed">Authentification échouée veuillez vérifier les informations saisi</string>
 </resources>

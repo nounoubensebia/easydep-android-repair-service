@@ -11,5 +11,6 @@
     <color name="refresh_progress_1">@color/colorPrimary</color>
     <color name="refresh_progress_2">@color/colorPrimary</color>
     <color name="refresh_progress_3">@color/colorPrimary</color>
+    <color name="white">#FFF</color>
 
 </resources>

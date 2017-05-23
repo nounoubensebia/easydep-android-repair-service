@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import com.example.nouno.easydep_repairservice.Data.RepairService;
 import com.example.nouno.easydep_repairservice.QueryUtils;
 import com.example.nouno.easydep_repairservice.R;
 
+import com.example.nouno.easydep_repairservice.SnackBarUtils;
 import com.example.nouno.easydep_repairservice.exceptions.ConnectionProblemException;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -24,6 +26,7 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
     private TextInputLayout emailWrapper;
     private TextInputLayout passwordWrapper;
+    private LoginActivity loginActivity;
     private Button signInButton;
     private Button signUpButton;
     private ProgressBar progressBar;
@@ -44,8 +47,20 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 emailWrapper = (TextInputLayout)findViewById(R.id.eamilWrapper);
                 passwordWrapper = (TextInputLayout)findViewById(R.id.passwordWrapper);
+
                 String email = emailWrapper.getEditText().getText().toString();
                 String password = passwordWrapper.getEditText().getText().toString();
+                emailWrapper.setErrorEnabled(false);
+                passwordWrapper.setErrorEnabled(false);
+                if (!QueryUtils.validateEmail(email)) {
+                    emailWrapper.setErrorEnabled(true);
+                    emailWrapper.setError("L'adresse e-mail n'est pas valide");
+                }
+                if (!QueryUtils.validatePassword(password)) {
+                    passwordWrapper.setErrorEnabled(true);
+                    passwordWrapper.setError("Le mot de passe n'est pas valide");
+                }
+                if (QueryUtils.validateEmail(email)&&QueryUtils.validatePassword(password))
                 loginUser(email,password);
             }
         });
@@ -105,8 +120,17 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            repairService = RepairService.parseJson(s);
-            startApp();
+            if (s.equals("failed"))
+            {
+                Snackbar snackbar = SnackBarUtils.makeSnackBar(loginActivity,signInButton);
+                signInButton.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+            }
+            else
+            {
+                repairService = RepairService.parseJson(s);
+                startApp();
+            }
         }
     }
 
