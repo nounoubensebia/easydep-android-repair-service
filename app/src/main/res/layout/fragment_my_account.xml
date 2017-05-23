@@ -67,6 +67,8 @@
             android:layout_height="1dp"/>
 
         <RelativeLayout
+            android:clickable="true"
+            android:id="@+id/password_layout"
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_height="wrap_content">
@@ -155,6 +157,7 @@
             android:background="#f1f1f1"
             android:layout_height="1dp"/>
         <RelativeLayout
+            android:id="@+id/price_layout"
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_height="wrap_content">
@@ -197,6 +200,7 @@
             android:background="#f1f1f1"
             android:layout_height="1dp"/>
         <RelativeLayout
+            android:id="@+id/status_layout"
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_height="wrap_content">

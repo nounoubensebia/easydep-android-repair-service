@@ -24,5 +24,13 @@ public class Utils {
         return repairService;
     }
 
+    public static void saveRepairService (Context context,RepairService repairService)
+    {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("repairService",repairService.toJson());
+        editor.commit();
+    }
+
 
 }
