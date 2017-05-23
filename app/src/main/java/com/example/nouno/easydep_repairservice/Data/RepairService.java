@@ -17,6 +17,7 @@ public class RepairService extends Person {
     private int price;
     private int status;
     private String email;
+    private Tokens tokens;
     private Position position;
     private boolean automaticLocationDetection=true;
     public static final int NO_PRICE = 99999;
@@ -30,12 +31,13 @@ public class RepairService extends Person {
         super(id, firstname, lastname);
     }
 
-    public RepairService(long id, String firstname, String lastname, String phoneNumber, int price, int status, Position position) {
+    public RepairService(long id, String firstname, String lastname, String phoneNumber, int price, int status, Position position, Tokens tokens) {
         super(id, firstname, lastname);
         this.phoneNumber = phoneNumber;
         this.price = price;
         this.status = status;
         this.position = position;
+        this.tokens = tokens;
     }
 
     public RepairService(long id, String firstname, String lastname, String phoneNumber, int price, int status, String email, Position position) {
@@ -162,9 +164,25 @@ public class RepairService extends Person {
             String placeName = jsonObject.getString("place_name");
             Position position = new Position(latitude,longitude,placeName);
             repairService = new RepairService(id,firstname,lastname,phoneNumber,price,status,email,position);
+            if (jsonObject.has("access_token"))
+            {
+                String accessToken = jsonObject.getString("access_token");
+                String refreshToken = jsonObject.getString("refresh_token");
+                Tokens tokens = new Tokens(accessToken,refreshToken);
+                repairService.setTokens(tokens);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return repairService;
+    }
+
+    public Tokens getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(Tokens tokens) {
+        this.tokens = tokens;
     }
 }

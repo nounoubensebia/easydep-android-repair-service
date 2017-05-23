@@ -116,7 +116,6 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("repairService",repairService.toJson());
-
         editor.commit();
     }
 }

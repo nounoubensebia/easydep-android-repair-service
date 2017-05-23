@@ -20,7 +20,7 @@ public class Utils {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 
         repairService = RepairService.fromJson(sharedPref.getString("repairService",repairService.toJson()));
-        repairService.setPosition(new Position(36.56,3.456,"Cité Zerhouni Mokhtar"));
+        //repairService.setPosition(new Position(36.56,3.456,"Cité Zerhouni Mokhtar"));
         return repairService;
     }
 }

@@ -1,6 +1,12 @@
 package com.example.nouno.easydep_repairservice;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import com.example.nouno.easydep_repairservice.Data.RepairService;
+import com.example.nouno.easydep_repairservice.Data.Tokens;
 import com.example.nouno.easydep_repairservice.exceptions.ConnectionProblemException;
+import com.google.gson.Gson;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,7 +32,7 @@ import java.util.regex.Pattern;
  */
 
 public class QueryUtils {
-    public static final String PATH = "http://192.168.1.4/EasyDep/";
+    public static final String PATH = "http://192.168.1.12/EasyDep/";
     public static  String REQUESTS_URL = PATH+"requests.php";
     public static final String GET_USER_LOCATION_NAME_URL = "https://maps.googleapis.com/maps/api/geocode/json?&key=AIzaSyAqQHxLWPTvFHDvz5WUwuNAjTa0UuSHbmk&language=fr-FR&";
     public static  final String GET_REQUESTS =  "get_repair_service_requests";
@@ -40,6 +46,59 @@ public class QueryUtils {
     public static final String ACCOUNT_URL = PATH+"repair_service_account_api.php";
     public static final String SIGNUP_ACTION = "signup";
 
+
+
+
+    private static RepairService getCarOwner ()
+    {
+        RepairService repairService = null;
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(App.getContext().getApplicationContext());
+        Gson gson = new Gson();
+        if (sharedPref.contains("repairService"))
+        {
+
+            String Json = sharedPref.getString("repairService","qsdqsd");
+            repairService = gson.fromJson(Json,RepairService.class);
+        }
+        return repairService;
+    }
+    private static Tokens getTokens()
+    {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(App.getContext().getApplicationContext());
+        if (sharedPref.contains("repairService"))
+            return getCarOwner().getTokens();
+        else
+            return null;
+    }
+
+    private static void receiveNewAccessToken(HttpURLConnection httpURLConnection)
+    {
+        httpURLConnection.getHeaderField("refresh-token");
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(App.getContext().getApplicationContext());
+        SharedPreferences.Editor editor = sharedPref.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(getCarOwner());
+        editor.putString("repairService",json);
+        editor.commit();
+    }
+
+    private static void sendTokens (HttpURLConnection httpURLConnection)
+    {
+        if (getTokens()!=null)
+        {
+            httpURLConnection.setRequestProperty("access-token",getTokens().getAccessToken());
+            if (getTokens().accessTokenExpired())
+            {
+                httpURLConnection.setRequestProperty("refresh-token",getTokens().getRefreshToken());
+            }
+        }
+    }
+
+
+
+
+
+
     public static String makeHttpPostRequest (String urlString,Map<String,String> parameters) throws ConnectionProblemException
     {   String response = null;
         InputStream inputStream=null;
@@ -52,6 +111,7 @@ public class QueryUtils {
             urlConnection.setReadTimeout(15000);
             urlConnection.setRequestMethod("POST");
             urlConnection.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+            sendTokens(urlConnection);
             String postParameters = buildParametersString(parameters);
             urlConnection.setFixedLengthStreamingMode(postParameters.getBytes().length);
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
@@ -60,6 +120,11 @@ public class QueryUtils {
             urlConnection.connect();
             if (urlConnection.getResponseCode()==200)
             {
+                if (getTokens()!=null)
+                {
+                    if (getTokens().accessTokenExpired())
+                        receiveNewAccessToken(urlConnection);
+                }
                 inputStream = urlConnection.getInputStream();
                 response=readFromStream(inputStream);
             }
@@ -91,7 +156,6 @@ public class QueryUtils {
             {
                 urlConnection.disconnect();
             }
-
             return response;
         }
     }
