@@ -43,6 +43,7 @@ public class LocationUpdateService extends Service implements GoogleApiClient.Co
 
     @Override
     public void onCreate() {
+        Log.i("Service","Launched");
         repairService = Utils.getLoggedRepairService(this);
         googleApiClient = new GoogleApiClient.Builder(this).addApi(LocationServices.API).addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
         googleApiClient.connect();

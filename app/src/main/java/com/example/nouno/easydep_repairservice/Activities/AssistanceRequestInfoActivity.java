@@ -93,7 +93,7 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity implements 
         Drawable drawable;
         if (assistanceRequest.isHeavy())
         {
-            typeText.setText("Véhicule lourd");
+            typeText.setText("Poids lourd");
             drawable= getDrawable(R.drawable.ic_airport_heavy_24dp);
             typeText.setCompoundDrawablesWithIntrinsicBounds(null,drawable,null,null);
             View heavyLayout = findViewById(R.id.heavy_layout);

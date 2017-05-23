@@ -66,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         {
             Intent i = new Intent(this,MainActivity.class);
             startActivity(i);
+            finish();
         }
     }
 
@@ -111,11 +112,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private void startApp ()
     {
-        Intent i = new Intent(this,MainActivity.class);
-        startActivity(i);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("repairService",repairService.toJson());
         editor.commit();
+        Intent i = new Intent(this,MainActivity.class);
+        startActivity(i);
+        finish();
     }
 }
