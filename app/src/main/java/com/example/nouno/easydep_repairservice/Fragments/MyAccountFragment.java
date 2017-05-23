@@ -18,6 +18,7 @@ import com.example.nouno.easydep_repairservice.Activities.LocationSearchActivity
 import com.example.nouno.easydep_repairservice.Activities.LoginActivity;
 import com.example.nouno.easydep_repairservice.Data.Position;
 import com.example.nouno.easydep_repairservice.Data.RepairService;
+import com.example.nouno.easydep_repairservice.Data.Tokens;
 import com.example.nouno.easydep_repairservice.DialogUtils;
 import com.example.nouno.easydep_repairservice.QueryUtils;
 import com.example.nouno.easydep_repairservice.R;
@@ -185,8 +186,10 @@ public class MyAccountFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String s) {
+            Tokens tokens = repairService.getTokens();
             boolean bool = repairService.isAutomaticLocationDetection();
             repairService = RepairService.parseJson(s);
+            repairService.setTokens(tokens);
             repairService.setAutomaticLocationDetection(bool);
             displayData(getView());
             progressBar.setVisibility(View.GONE);

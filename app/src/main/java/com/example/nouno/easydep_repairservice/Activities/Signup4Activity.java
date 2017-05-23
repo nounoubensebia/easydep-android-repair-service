@@ -12,11 +12,15 @@ import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 
 import com.example.nouno.easydep_repairservice.Data.RepairService;
+import com.example.nouno.easydep_repairservice.Data.Tokens;
 import com.example.nouno.easydep_repairservice.QueryUtils;
 import com.example.nouno.easydep_repairservice.R;
 import com.example.nouno.easydep_repairservice.Services.LocationUpdateService;
 import com.example.nouno.easydep_repairservice.exceptions.ConnectionProblemException;
 import com.google.firebase.iid.FirebaseInstanceId;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -93,9 +97,22 @@ public class Signup4Activity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             exitEnterFadeAnimation(signupUnderwayLayout,signupCompletedLayout);
-            repairService.setId(Integer.parseInt(s));
+            try {
+                JSONObject jsonObject = new JSONObject(s);
+                long id = jsonObject.getLong("id");
+                String accessToken = jsonObject.getString("access_token");
+                String refreshToken = jsonObject.getString("refresh_token");
+                Tokens tokens = new Tokens(accessToken,refreshToken);
+                repairService.setTokens(tokens);
+                repairService.setId(id);
+                startMainActivity();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-        }
+
+
+    }
     }
 
     private void startMainActivity()
