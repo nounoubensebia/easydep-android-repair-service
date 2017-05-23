@@ -26,11 +26,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Signup4Activity extends AppCompatActivity {
-    private View fab;
+
     private RepairService repairService;
 
     private View signupUnderwayLayout;
     private View signupCompletedLayout;
+    private View fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -39,8 +40,6 @@ public class Signup4Activity extends AppCompatActivity {
         signupUnderwayLayout = findViewById(R.id.signup_underway_layout);
         signupCompletedLayout = findViewById(R.id.signup_completed_layout);
         Animation fade = AnimationUtils.loadAnimation(this,R.anim.infinite_fade);
-        fade.setRepeatCount(Animation.INFINITE);
-        signupUnderwayLayout.startAnimation(fade);
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,8 +47,11 @@ public class Signup4Activity extends AppCompatActivity {
                 startMainActivity();
             }
         });
+        fade.setRepeatCount(Animation.INFINITE);
+        signupUnderwayLayout.startAnimation(fade);
         getRepairService();
         signUpUser(getIntent().getExtras().getString("password"));
+
     }
 
     private void getRepairService ()
@@ -80,9 +82,6 @@ public class Signup4Activity extends AppCompatActivity {
 
     private class SignUpTask extends AsyncTask<Map<String,String>,Void,String>
     {
-
-
-
         @Override
         protected String doInBackground(Map<String, String>... params) {
             String response = null;
@@ -105,7 +104,7 @@ public class Signup4Activity extends AppCompatActivity {
                 Tokens tokens = new Tokens(accessToken,refreshToken);
                 repairService.setTokens(tokens);
                 repairService.setId(id);
-                startMainActivity();
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -118,13 +117,12 @@ public class Signup4Activity extends AppCompatActivity {
     private void startMainActivity()
     {
         Intent i = new Intent(this,MainActivity.class);
-        startActivity(i);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("repairService",repairService.toJson());
-
-
         editor.commit();
+        startActivity(i);
+        finish();
     }
 
 

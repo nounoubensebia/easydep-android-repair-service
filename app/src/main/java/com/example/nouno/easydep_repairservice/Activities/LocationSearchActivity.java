@@ -292,7 +292,7 @@ public class LocationSearchActivity extends AppCompatActivity implements GoogleA
             if (extras.containsKey("repairService")) {
                 repairService.setPosition(position);
                 if (isUserPosition == true) {
-                    //startService(new Intent(this, LocationUpdateService.class));
+
                     repairService.setAutomaticLocationDetection(true);
                 } else {
                     repairService.setAutomaticLocationDetection(false);
@@ -343,13 +343,20 @@ public class LocationSearchActivity extends AppCompatActivity implements GoogleA
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            Intent i = new Intent(getApplicationContext(),MainActivity.class);
-            i.putExtra("myAccount","");
+            Bundle extras = getIntent().getExtras();
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("repairService",repairService.toJson());
             editor.apply();
-            startActivity(i);
+            if (!extras.containsKey("password"))
+            {
+                Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                i.putExtra("myAccount","");
+                startActivity(i);
+                finish();
+            }
+
+
         }
     }
 }

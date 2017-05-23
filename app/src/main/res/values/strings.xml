@@ -103,4 +103,6 @@
     <string name="inscrivez_vous">Inscrivez vous !</string>
     <string name="comment_vous_appelez_vous">Comment vous appeler vous ?</string>
     <string name="no_comments">Aucun avis pour le moment</string>
+    <string name="email_already_exists">Un compte avec cet email existe déjà</string>
+    <string name="phone_number_already_exists">Un compte avec ce numéro de téléphone existe déjà</string>
 </resources>

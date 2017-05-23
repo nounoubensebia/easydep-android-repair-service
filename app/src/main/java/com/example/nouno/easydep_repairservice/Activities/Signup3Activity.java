@@ -36,11 +36,18 @@ public class Signup3Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String password = passwordWrapper.getEditText().getText().toString();
-                Intent i = new Intent(getApplicationContext(),LocationSearchActivity.class);
-                i.putExtra("password",password);
-                i.putExtra("repairService",repairService.toJson());
-                startActivity(i);
-                finish();
+                if (QueryUtils.validatePassword(password))
+                {
+                    Intent i = new Intent(getApplicationContext(),LocationSearchActivity.class);
+                    i.putExtra("password",password);
+                    i.putExtra("repairService",repairService.toJson());
+                    startActivity(i);
+                    finish();
+                }
+                else
+                {
+                    passwordWrapper.getEditText().setError("Erreur veuillez entrer un mot de passe valide");
+                }
             }
         });
     }
