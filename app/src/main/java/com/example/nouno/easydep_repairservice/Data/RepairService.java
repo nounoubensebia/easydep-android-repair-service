@@ -98,6 +98,8 @@ public class RepairService extends Person {
         this.position = position;
     }
 
+
+
     public String toJson ()
     {
         Gson gson = new Gson();

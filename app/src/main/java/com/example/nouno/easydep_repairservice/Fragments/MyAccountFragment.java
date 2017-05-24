@@ -14,8 +14,11 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +51,7 @@ public class MyAccountFragment extends Fragment {
     private ProgressBar progressBar;
     private View infoLayout;
     private View passwordLayout;
+    private View priceLayout;
     public static boolean loadedInfo = false;
 
     public MyAccountFragment() {
@@ -61,10 +65,10 @@ public class MyAccountFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_my_account, container, false);
         getRepairService();
-        //displayData(view);
+
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
         infoLayout = view.findViewById(R.id.info_layout);
         passwordLayout = view.findViewById(R.id.password_layout);
@@ -115,6 +119,30 @@ public class MyAccountFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 logoutUser();
+            }
+        });
+        priceLayout = view.findViewById(R.id.price_layout);
+        priceLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog dialog = buildPriceDialog();
+                dialog.show();
+            }
+        });
+        View phoneLayout = view.findViewById(R.id.phone_layout);
+        phoneLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog dialog = buildPhoneDialog();
+                dialog.show();
+            }
+        });
+        View statusLayout = view.findViewById(R.id.status_layout);
+        statusLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog dialog = buildStatusDialog();
+                dialog.show();
             }
         });
     }
@@ -226,7 +254,24 @@ public class MyAccountFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int id) {
                         String oldPassword = ((EditText) view.findViewById(R.id.old_password)).getText().toString();
                         String newPassword = ((EditText) view.findViewById(R.id.new_password)).getText().toString();
+                        if (QueryUtils.validatePassword(newPassword)&&QueryUtils.validatePassword(oldPassword))
                         changePassword(oldPassword,newPassword);
+                        else
+                        {
+                            Dialog dialog1=null;
+                            if (!QueryUtils.validatePassword(newPassword)&&QueryUtils.validatePassword(oldPassword))
+                            {
+                                dialog1 = DialogUtils.buildInfoDialog("Erreur","Le nouveau mot de passe doit contenir au moins 5 Caractères ",getActivity());
+                            }
+                            else
+                            {
+                                if (QueryUtils.validatePassword(newPassword)&&!QueryUtils.validatePassword(oldPassword))
+                                    dialog1 = DialogUtils.buildInfoDialog("Erreur","L'ancien mot de passe doit contenir au moins 5 Caractères ",getActivity());
+                                else
+                                    dialog1 = DialogUtils.buildInfoDialog("Erreur","Les mot de passes doivent contenir au moins 5 Caractères ",getActivity());
+                            }
+                            dialog1.show();
+                        }
                     }
                 })
                 .setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
@@ -282,6 +327,7 @@ public class MyAccountFragment extends Fragment {
                     Utils.saveRepairService(getActivity(), repairService);
                     Dialog dialog = DialogUtils.buildInfoDialog("Mot de passe changé", "Votre mot de passe a été mis a jour", getActivity());
                     dialog.show();
+                    getInfo();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -295,13 +341,46 @@ public class MyAccountFragment extends Fragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         final View view = inflater.inflate(R.layout.dialog_change_price, null);
+        final CheckBox noPriceCheckBox = (CheckBox)view.findViewById(R.id.no_price_checkbox);
+        final EditText priceText = (EditText)view.findViewById(R.id.price);
+        noPriceCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                priceText.setText("");
+            }
+        });
         builder.setView(view)
                 // Add action buttons
                 .setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        //TODO remplir
-
+                        if (!noPriceCheckBox.isChecked())
+                        {
+                            if(priceText.getText().toString().isEmpty())
+                            {
+                                Dialog dialog1 = DialogUtils.buildInfoDialog("Erreur","Veuillez spécifier un tarif valide",getActivity());
+                                dialog1.show();
+                            }
+                            else
+                            {
+                                int price = Integer.parseInt(priceText.getText().toString());
+                                if (price>=100&&price<=1000)
+                                {
+                                    repairService.setPrice(price);
+                                    changePrice(price);
+                                }
+                                else
+                                {
+                                    Dialog dialog1 = DialogUtils.buildInfoDialog("Erreur","Les tarifs sont compris entre 100 et 1000da/km",getActivity());
+                                    dialog1.show();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            repairService.setPrice(RepairService.NO_PRICE);
+                            changePrice(RepairService.NO_PRICE);
+                        }
                     }
                 })
                 .setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
@@ -311,5 +390,205 @@ public class MyAccountFragment extends Fragment {
                 });
         return builder.create();
     }
+
+    private void changePrice (int price)
+    {
+        LinkedHashMap<String,String> map = new LinkedHashMap<>();
+        map.put("action","change_price");
+        map.put("repair_service_id",repairService.getId()+"");
+        map.put("price",price+"");
+        ChangePriceTask changePriceTask = new ChangePriceTask();
+        changePriceTask.execute(map);
+    }
+
+    private class ChangePriceTask extends AsyncTask<Map<String,String>,Void,String> {
+        @Override
+        protected void onPreExecute() {
+            progressDialog = (ProgressDialog)DialogUtils.buildProgressDialog("Veuillez patienter",getActivity());
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Map<String, String>... params) {
+           String response = null;
+            try {
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.ACCOUNT_URL,params[0]);
+            } catch (ConnectionProblemException e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            progressDialog.dismiss();
+            if (s.equals("success"))
+            {
+                Utils.saveRepairService(getActivity(),repairService);
+                Dialog dialog = DialogUtils.buildInfoDialog("Opération termniée","Opération terminée avec succés",getActivity());
+                dialog.show();
+                getInfo();
+            }
+        }
+    }
+
+    private Dialog buildPhoneDialog ()
+    {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        // Get the layout inflater
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+
+        final View view = inflater.inflate(R.layout.dialog_phone, null);
+        builder.setView(view)
+                // Add action buttons
+                .setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                       EditText phoneText = (EditText)view.findViewById(R.id.phone);
+                        String phoneNumber = phoneText.getText().toString();
+                        if (!QueryUtils.validatePhoneNumber(phoneNumber))
+                        {
+                            Dialog dialog1 = DialogUtils.buildInfoDialog("Erreur","Veuillez insérer un numéro de téléphone valide",getActivity());
+                            dialog1.show();
+                        }
+                        else
+                        {
+                            changePhoneNumber(phoneNumber);
+                        }
+                    }
+                })
+                .setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+        return builder.create();
+    }
+    private void changePhoneNumber(String phoneNumber)
+    {
+        LinkedHashMap<String,String> map = new LinkedHashMap<>();
+        map.put("repair_service_id",repairService.getId()+"");
+        map.put("phone_number",phoneNumber);
+        map.put("action","change_phone_number");
+        ChangePhoneNumberTask changePhoneNumberTask = new ChangePhoneNumberTask();
+        changePhoneNumberTask.execute(map);
+    }
+
+    private class ChangePhoneNumberTask extends AsyncTask<Map<String,String>,Void,String>
+    {
+        @Override
+        protected void onPreExecute() {
+            progressDialog = (ProgressDialog)DialogUtils.buildProgressDialog("Veuillez patienter",getActivity());
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Map<String, String>... params) {
+            String response = null;
+            try {
+                response = QueryUtils.makeHttpPostRequest(QueryUtils.ACCOUNT_URL,params[0]);
+            } catch (ConnectionProblemException e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            progressDialog.dismiss();
+            if (s.equals("success"))
+            {
+                Dialog dialog = DialogUtils.buildInfoDialog("Opération termniée","Opération terminée avec succés",getActivity());
+                dialog.show();
+                getInfo();
+            }
+            else if (s.equals("exists"))
+            {
+                Dialog dialog = DialogUtils.buildInfoDialog("Erreur","Un compte avec ce numéro de téléphone existe déjà",getActivity());
+                dialog.show();
+            }
+        }
+    }
+
+    private Dialog buildStatusDialog ()
+    {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        // Get the layout inflater
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+
+        final View view = inflater.inflate(R.layout.dialog_status, null);
+        final RadioGroup radioGroup = (RadioGroup)view.findViewById(R.id.status_radio_group);
+        switch (repairService.getStatus())
+        {
+            case RepairService.AVAILABLE : radioGroup.check(R.id.status_available_radio_button);
+                break;
+            case RepairService.NOT_AVAILABLE:radioGroup.check(R.id.status_busy_radio_button);
+                break;
+        }
+        builder.setView(view)
+                // Add action buttons
+
+                .setPositiveButton("Confirmer", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        int status = repairService.NOT_AVAILABLE;
+                        if (radioGroup.getCheckedRadioButtonId()==R.id.status_available_radio_button)
+                        {
+                            status = repairService.AVAILABLE;
+                        }
+                        if (status!=repairService.getStatus())
+                        {
+                            changeStatus(status);
+                        }
+                    }
+                })
+                .setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+        return builder.create();
+    }
+
+    private void changeStatus (int status)
+    {
+        LinkedHashMap<String,String> map = new LinkedHashMap<>();
+        map.put("action","change_status");
+        map.put("status",status+"");
+        map.put("repair_service_id",repairService.getId()+"");
+        ChangeStatusTask changeStatusTask = new ChangeStatusTask();
+        changeStatusTask.execute(map);
+    }
+
+    private class ChangeStatusTask extends AsyncTask<Map<String,String>,Void,String>
+    {
+        @Override
+        protected void onPreExecute() {
+            progressDialog = (ProgressDialog)DialogUtils.buildProgressDialog("Veuillez patienter",getActivity());
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Map<String, String>... params) {
+            String response = null;
+            try {
+                response =QueryUtils.makeHttpPostRequest(QueryUtils.ACCOUNT_URL,params[0]);
+            } catch (ConnectionProblemException e) {
+                e.printStackTrace();
+            }
+            return response;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            progressDialog.dismiss();
+            if (s.equals("success"))
+            {
+                Dialog dialog = DialogUtils.buildInfoDialog("Opération terminée","Opération terminée avec succés",getActivity());
+                dialog.show();
+            }
+        }
+    }
+
 
 }

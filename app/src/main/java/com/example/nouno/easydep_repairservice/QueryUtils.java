@@ -93,12 +93,6 @@ public class QueryUtils {
             }
         }
     }
-
-
-
-
-
-
     public static String makeHttpPostRequest (String urlString,Map<String,String> parameters) throws ConnectionProblemException
     {   String response = null;
         InputStream inputStream=null;
