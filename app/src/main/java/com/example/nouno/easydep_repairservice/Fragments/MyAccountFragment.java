@@ -524,6 +524,8 @@ public class MyAccountFragment extends Fragment {
                 break;
             case RepairService.NOT_AVAILABLE:radioGroup.check(R.id.status_busy_radio_button);
                 break;
+            case RepairService.INTERVENTION_UNDERWAY:radioGroup.check(R.id.status_available_radio_button);
+                break;
         }
         builder.setView(view)
                 // Add action buttons
@@ -538,7 +540,23 @@ public class MyAccountFragment extends Fragment {
                         }
                         if (status!=repairService.getStatus())
                         {
-                            changeStatus(status);
+                            if (status==RepairService.NOT_AVAILABLE)
+                            {
+                                final int finalStatus = status;
+                                Dialog dialog1 = DialogUtils.buildClickableWarningDialog("Attention", "Ceci va annuler toutes les demandes en cours", getActivity()
+                                        , new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                changeStatus(finalStatus);
+                                            }
+                                        });
+                                dialog1.show();
+                            }
+                            else
+                            {
+                                changeStatus(status);
+                            }
+
                         }
                     }
                 })
@@ -582,11 +600,10 @@ public class MyAccountFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             progressDialog.dismiss();
-            if (s.equals("success"))
-            {
+
                 Dialog dialog = DialogUtils.buildInfoDialog("Opération terminée","Opération terminée avec succés",getActivity());
                 dialog.show();
-            }
+
         }
     }
 

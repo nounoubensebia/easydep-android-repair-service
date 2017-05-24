@@ -13,8 +13,10 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.nouno.easydep_repairservice.Data.AssistanceRequest;
+import com.example.nouno.easydep_repairservice.Data.RepairService;
 import com.example.nouno.easydep_repairservice.QueryUtils;
 import com.example.nouno.easydep_repairservice.R;
+import com.example.nouno.easydep_repairservice.Utils;
 import com.example.nouno.easydep_repairservice.exceptions.ConnectionProblemException;
 import com.google.gson.Gson;
 
@@ -112,6 +114,9 @@ public class EstimateActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             progressBar.setVisibility(View.GONE);
             Toast.makeText(getApplicationContext(),"Devis envoyé",Toast.LENGTH_LONG).show();
+            RepairService repairService = Utils.getLoggedRepairService(getApplicationContext());
+            repairService.setStatus(RepairService.AVAILABLE);
+            Utils.saveRepairService(getApplicationContext(),repairService);
             startMainActivity();
             View fab = findViewById(R.id.fab);
             fab.setVisibility(View.GONE);

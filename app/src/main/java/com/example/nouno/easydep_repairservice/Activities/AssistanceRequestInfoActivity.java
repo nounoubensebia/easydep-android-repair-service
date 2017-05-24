@@ -17,9 +17,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.nouno.easydep_repairservice.Data.AssistanceRequest;
+import com.example.nouno.easydep_repairservice.Data.RepairService;
 import com.example.nouno.easydep_repairservice.DialogUtils;
 import com.example.nouno.easydep_repairservice.QueryUtils;
 import com.example.nouno.easydep_repairservice.R;
+import com.example.nouno.easydep_repairservice.Utils;
 import com.example.nouno.easydep_repairservice.exceptions.ConnectionProblemException;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -154,7 +156,18 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity implements 
             writeEstimateText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (Utils.getLoggedRepairService(assistanceRequestInfoActivity).getStatus()!= RepairService.NOT_AVAILABLE)
                     startSendEstimateActivity();
+                    else
+                    {
+                        Dialog dialog = DialogUtils.buildClickableWarningDialog("Attention", "Ceci va faire passer votre statut de occupé a disponible", assistanceRequestInfoActivity, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startSendEstimateActivity();
+                            }
+                        });
+                        dialog.show();
+                    }
                 }
             });
         }
