@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
  */
 
 public class QueryUtils {
-    public static final String PATH = "http://192.168.1.12/EasyDep/";
+    public static final String PATH = "http://192.168.1.5/EasyDep/";
     public static  String REQUESTS_URL = PATH+"requests.php";
     public static final String GET_USER_LOCATION_NAME_URL = "https://maps.googleapis.com/maps/api/geocode/json?&key=AIzaSyAqQHxLWPTvFHDvz5WUwuNAjTa0UuSHbmk&language=fr-FR&";
     public static  final String GET_REQUESTS =  "get_repair_service_requests";
