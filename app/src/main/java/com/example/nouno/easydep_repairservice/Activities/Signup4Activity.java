@@ -76,6 +76,7 @@ public class Signup4Activity extends AppCompatActivity {
         map.put("action", QueryUtils.SIGNUP_ACTION);
         map.put("latitude",repairService.getPosition().getLatitude()+"");
         map.put("longitude",repairService.getPosition().getLongitude()+"");
+        map.put("wilaya",repairService.getWilaya()+"");
         SignUpTask signUpTask = new SignUpTask();
         signUpTask.execute(map);
     }
