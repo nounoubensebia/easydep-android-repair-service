@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.nouno.easydep_repairservice.Data.RepairService;
 import com.example.nouno.easydep_repairservice.Data.Tokens;
@@ -90,24 +91,34 @@ public class Signup4Activity extends AppCompatActivity {
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.ACCOUNT_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
 
         @Override
         protected void onPostExecute(String s) {
-            exitEnterFadeAnimation(signupUnderwayLayout,signupCompletedLayout);
-            try {
-                JSONObject jsonObject = new JSONObject(s);
-                long id = jsonObject.getLong("id");
-                String accessToken = jsonObject.getString("access_token");
-                String refreshToken = jsonObject.getString("refresh_token");
-                Tokens tokens = new Tokens(accessToken,refreshToken);
-                repairService.setTokens(tokens);
-                repairService.setId(id);
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
+            {
+                exitEnterFadeAnimation(signupUnderwayLayout,signupCompletedLayout);
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    long id = jsonObject.getLong("id");
+                    String accessToken = jsonObject.getString("access_token");
+                    String refreshToken = jsonObject.getString("refresh_token");
+                    Tokens tokens = new Tokens(accessToken,refreshToken);
+                    repairService.setTokens(tokens);
+                    repairService.setId(id);
 
-            } catch (JSONException e) {
-                e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            else
+            {
+                TextView patientez = (TextView)findViewById(R.id.patientez);
+                patientez.setText("Erreur connexion au serveur impossible");
+                signupUnderwayLayout.clearAnimation();
             }
 
 

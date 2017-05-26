@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.nouno.easydep_repairservice.Data.RepairService;
 import com.example.nouno.easydep_repairservice.QueryUtils;
@@ -114,12 +115,15 @@ public class LoginActivity extends AppCompatActivity {
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.ACCOUNT_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
 
         @Override
         protected void onPostExecute(String s) {
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
+            {
             if (s.equals("failed"))
             {
                 Snackbar snackbar = SnackBarUtils.makeSnackBar(loginActivity,signInButton);
@@ -130,6 +134,13 @@ public class LoginActivity extends AppCompatActivity {
             {
                 repairService = RepairService.parseJson(s);
                 startApp();
+            }
+            }
+            else
+            {
+                signInButton.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(), R.string.connection_failed,Toast.LENGTH_LONG).show();
             }
         }
     }

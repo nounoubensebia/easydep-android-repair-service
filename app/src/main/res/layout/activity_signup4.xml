@@ -50,6 +50,7 @@
         android:id="@+id/signup_underway_layout"
         android:layout_height="wrap_content">
         <TextView
+            android:id="@+id/patientez"
             android:gravity="center"
             android:layout_marginRight="16dp"
             android:layout_marginLeft="16dp"

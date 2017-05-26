@@ -11,6 +11,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nouno.easydep_repairservice.Activities.MainActivity;
 import com.example.nouno.easydep_repairservice.Data.Comment;
@@ -132,16 +133,25 @@ public class StatisticsFragment extends Fragment {
                 statistic = Statistic.parseJson(response);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
 
         @Override
         protected void onPostExecute(String s) {
-            displayData(getView());
-            populateListView();
-            progressBar.setVisibility(View.GONE);
-            root.setVisibility(View.VISIBLE);
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
+            {
+                displayData(getView());
+                populateListView();
+                progressBar.setVisibility(View.GONE);
+                root.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getActivity().getApplicationContext(), R.string.connection_failed,Toast.LENGTH_LONG).show();
+            }
         }
     }
 

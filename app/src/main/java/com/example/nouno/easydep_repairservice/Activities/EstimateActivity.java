@@ -134,12 +134,15 @@ public class EstimateActivity extends AppCompatActivity {
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
 
         @Override
         protected void onPostExecute(String s) {
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
+            {
             progressBar.setVisibility(View.GONE);
             Toast.makeText(getApplicationContext(),"Devis envoyé",Toast.LENGTH_LONG).show();
             RepairService repairService = Utils.getLoggedRepairService(getApplicationContext());
@@ -147,7 +150,15 @@ public class EstimateActivity extends AppCompatActivity {
             Utils.saveRepairService(getApplicationContext(),repairService);
             startMainActivity();
             View fab = findViewById(R.id.fab);
-            fab.setVisibility(View.GONE);
+            fab.setVisibility(View.GONE);}
+            else
+            {
+                View fab = findViewById(R.id.fab);
+                fab.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(), R.string.connection_failed,Toast.LENGTH_LONG).show();
+
+            }
         }
     }
 

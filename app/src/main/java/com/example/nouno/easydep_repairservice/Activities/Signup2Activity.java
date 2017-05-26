@@ -86,6 +86,7 @@ public class Signup2Activity extends AppCompatActivity {
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.ACCOUNT_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
@@ -94,32 +95,34 @@ public class Signup2Activity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             progressBar.setVisibility(View.GONE);
             fab.setVisibility(View.VISIBLE);
-            if (s.equals("1"))
-            {
-                emailWrapper.getEditText().setError(getString(R.string.email_already_exists));
-                phoneNumberWrapper.getEditText().setError(getString(R.string.phone_number_already_exists));
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM)) {
+                if (s.equals("1")) {
+                    emailWrapper.getEditText().setError(getString(R.string.email_already_exists));
+                    phoneNumberWrapper.getEditText().setError(getString(R.string.phone_number_already_exists));
+                }
+                if (s.equals("2")) {
+                    phoneNumberWrapper.getEditText().setError(getString(R.string.phone_number_already_exists));
+                }
+                if (s.equals("3")) {
+                    emailWrapper.getEditText().setError(getString(R.string.email_already_exists));
+                }
+                if (s.equals("0")) {
+                    String email = emailWrapper.getEditText().getText().toString();
+                    String phoneNumber = phoneNumberWrapper.getEditText().getText().toString();
+                    repairService = RepairService.fromJson(getIntent().getExtras().getString("repairService"));
+                    repairService.setPhoneNumber(phoneNumber);
+                    repairService.setEmail(email);
+                    String wilaya = wilayaSpinner.getSelectedItem().toString();
+                    repairService.setWilaya(wilaya);
+                    String json = repairService.toJson();
+                    Intent i = new Intent(getApplicationContext(), Signup3Activity.class);
+                    i.putExtra("repairService", json);
+                    startActivity(i);
+                }
             }
-            if (s.equals("2"))
+            else
             {
-                phoneNumberWrapper.getEditText().setError(getString(R.string.phone_number_already_exists));
-            }
-            if (s.equals("3"))
-            {
-                emailWrapper.getEditText().setError(getString(R.string.email_already_exists));
-            }
-            if (s.equals("0"))
-            {
-                String email = emailWrapper.getEditText().getText().toString();
-                String phoneNumber = phoneNumberWrapper.getEditText().getText().toString();
-                repairService = RepairService.fromJson(getIntent().getExtras().getString("repairService"));
-                repairService.setPhoneNumber(phoneNumber);
-                repairService.setEmail(email);
-                String wilaya = wilayaSpinner.getSelectedItem().toString();
-                repairService.setWilaya(wilaya);
-                String json = repairService.toJson();
-                Intent i = new Intent(getApplicationContext(),Signup3Activity.class);
-                i.putExtra("repairService",json);
-                startActivity(i);
+                Toast.makeText(getApplicationContext(), R.string.connection_failed,Toast.LENGTH_LONG).show();
             }
         }
     }

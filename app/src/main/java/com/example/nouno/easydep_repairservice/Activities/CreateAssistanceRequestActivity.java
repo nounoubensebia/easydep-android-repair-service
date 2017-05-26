@@ -204,19 +204,28 @@ public class CreateAssistanceRequestActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
-            String response = null;
+            String response = "";
             try {
                 response = QueryUtils.makeHttpPostJsonRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
 
         @Override
         protected void onPostExecute(String s) {
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
+            {
             Toast.makeText(getApplicationContext(),"Automobiliste ajouté",Toast.LENGTH_LONG).show();
             startMainActivity();
+            }
+            else
+            {
+
+                Toast.makeText(getApplicationContext(), R.string.connection_failed,Toast.LENGTH_LONG).show();
+            }
         }
     }
 

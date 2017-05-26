@@ -106,6 +106,7 @@
     <string name="email_already_exists">Un compte avec cet email existe déjà</string>
     <string name="phone_number_already_exists">Un compte avec ce numéro de téléphone existe déjà</string>
     <string name="login_failed">Authentification échouée veuillez vérifier les informations saisi</string>
+    <string name="connection_failed">Erreur connexion au serveur échouée</string>
     <string-array name="wilaya">
         <item>Alger</item>
         <item>Chlef</item>

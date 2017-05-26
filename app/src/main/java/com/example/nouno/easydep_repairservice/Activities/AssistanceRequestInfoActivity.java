@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.nouno.easydep_repairservice.Data.AssistanceRequest;
 import com.example.nouno.easydep_repairservice.Data.RepairService;
@@ -270,6 +271,8 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity implements 
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
+
             }
             return response;
         }
@@ -277,8 +280,15 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity implements 
         @Override
         protected void onPostExecute(String s) {
             progressDialog.dismiss();
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
+            {
             startMainActivity();
             finish();
+            }
+            else
+            {
+                Toast.makeText(getApplicationContext(), R.string.connection_failed,Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -300,23 +310,32 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity implements 
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
 
         @Override
         protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            try {
-                JSONObject jsonObject = new JSONObject(s);
-                assistanceRequest = AssistanceRequest.parseJson(jsonObject);
-                roota.setVisibility(View.VISIBLE);
-                displayData();
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
+            {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    assistanceRequest = AssistanceRequest.parseJson(jsonObject);
+                    roota.setVisibility(View.VISIBLE);
+                    displayData();
 
-                markUser();
+                    markUser();
+                    progressDialog.dismiss();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            else
+            {
                 progressDialog.dismiss();
-            } catch (JSONException e) {
-                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), R.string.connection_failed,Toast.LENGTH_LONG).show();
+                onBackPressed();
             }
 
         }
@@ -333,18 +352,21 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity implements 
 
         @Override
         protected String doInBackground(Map<String, String>... params) {
-            String response = null;
+            String response = "";
             try {
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.REQUESTS_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
 
         @Override
         protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+            //super.onPostExecute(s);
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
+            {
                 Dialog dialog = DialogUtils.buildClickableInfoDialog("Intervention terminée", "", assistanceRequestInfoActivity, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -352,6 +374,12 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity implements 
                     }
                 });
             dialog.show();
+            }
+            else
+            {
+                progressDialog.dismiss();
+                Toast.makeText(getApplicationContext(), R.string.connection_failed,Toast.LENGTH_LONG).show();
+            }
         }
 
 

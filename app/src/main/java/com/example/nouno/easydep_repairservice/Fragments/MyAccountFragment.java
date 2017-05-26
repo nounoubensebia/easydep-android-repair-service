@@ -168,11 +168,12 @@ public class MyAccountFragment extends Fragment {
 
         @Override
         protected String doInBackground(Map<String, String>... params) {
-            String response = null;
+            String response = "";
             try {
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.ACCOUNT_URL, params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
@@ -180,7 +181,12 @@ public class MyAccountFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             progressDialog.dismiss();
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
             startLoginActivity();
+            else
+            {
+                Toast.makeText(getActivity().getApplicationContext(), R.string.connection_failed,Toast.LENGTH_LONG).show();
+            }
 
         }
     }
@@ -220,24 +226,32 @@ public class MyAccountFragment extends Fragment {
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.ACCOUNT_URL, params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
 
         @Override
         protected void onPostExecute(String s) {
-            Tokens tokens = repairService.getTokens();
-            boolean bool = repairService.isAutomaticLocationDetection();
-            repairService = RepairService.parseJson(s);
-            repairService.setTokens(tokens);
-            repairService.setAutomaticLocationDetection(bool);
-            displayData(getView());
-            progressBar.setVisibility(View.GONE);
-            infoLayout.setVisibility(View.VISIBLE);
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString("repairService", repairService.toJson());
-            editor.commit();
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
+                {
+                Tokens tokens = repairService.getTokens();
+                boolean bool = repairService.isAutomaticLocationDetection();
+                repairService = RepairService.parseJson(s);
+                repairService.setTokens(tokens);
+                repairService.setAutomaticLocationDetection(bool);
+                displayData(getView());
+                progressBar.setVisibility(View.GONE);
+                infoLayout.setVisibility(View.VISIBLE);
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("repairService", repairService.toJson());
+                editor.commit();
+            }
+            else {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getActivity().getApplicationContext(), R.string.connection_failed,Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -302,11 +316,13 @@ public class MyAccountFragment extends Fragment {
 
         @Override
         protected String doInBackground(Map<String, String>... params) {
-            String response = null;
+            String response = "";
             try {
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.ACCOUNT_URL, params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
+
             }
             return response;
         }
@@ -314,23 +330,30 @@ public class MyAccountFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             progressDialog.dismiss();
-            if (s.equals("failed")) {
-                Dialog dialog = DialogUtils.buildInfoDialog("Erreur", "Mot de passe actuel incorrect", getActivity());
-                dialog.show();
-            } else {
-                try {
-                    JSONObject jsonObject = new JSONObject(s);
-                    String refreshToken = jsonObject.getString("refresh_token");
-                    String accessToken = jsonObject.getString("access_token");
-                    Tokens tokens = new Tokens(accessToken, refreshToken);
-                    repairService.setTokens(tokens);
-                    Utils.saveRepairService(getActivity(), repairService);
-                    Dialog dialog = DialogUtils.buildInfoDialog("Mot de passe changé", "Votre mot de passe a été mis a jour", getActivity());
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
+            {
+                if (s.equals("failed")) {
+                    Dialog dialog = DialogUtils.buildInfoDialog("Erreur", "Mot de passe actuel incorrect", getActivity());
                     dialog.show();
-                    getInfo();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                } else {
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        String refreshToken = jsonObject.getString("refresh_token");
+                        String accessToken = jsonObject.getString("access_token");
+                        Tokens tokens = new Tokens(accessToken, refreshToken);
+                        repairService.setTokens(tokens);
+                        Utils.saveRepairService(getActivity(), repairService);
+                        Dialog dialog = DialogUtils.buildInfoDialog("Mot de passe changé", "Votre mot de passe a été mis a jour", getActivity());
+                        dialog.show();
+                        getInfo();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
+            }
+            else
+            {
+                Toast.makeText(getActivity().getApplicationContext(), R.string.connection_failed,Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -410,11 +433,12 @@ public class MyAccountFragment extends Fragment {
 
         @Override
         protected String doInBackground(Map<String, String>... params) {
-           String response = null;
+           String response = "";
             try {
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.ACCOUNT_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
@@ -428,6 +452,10 @@ public class MyAccountFragment extends Fragment {
                 Dialog dialog = DialogUtils.buildInfoDialog("Opération termniée","Opération terminée avec succés",getActivity());
                 dialog.show();
                 getInfo();
+            }
+            else
+            {
+                Toast.makeText(getActivity().getApplicationContext(), R.string.connection_failed,Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -489,6 +517,7 @@ public class MyAccountFragment extends Fragment {
                 response = QueryUtils.makeHttpPostRequest(QueryUtils.ACCOUNT_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
@@ -496,16 +525,23 @@ public class MyAccountFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             progressDialog.dismiss();
-            if (s.equals("success"))
+            if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
             {
-                Dialog dialog = DialogUtils.buildInfoDialog("Opération termniée","Opération terminée avec succés",getActivity());
-                dialog.show();
-                getInfo();
+                if (s.equals("success"))
+                {
+                    Dialog dialog = DialogUtils.buildInfoDialog("Opération termniée","Opération terminée avec succés",getActivity());
+                    dialog.show();
+                    getInfo();
+                }
+                else if (s.equals("exists"))
+                {
+                    Dialog dialog = DialogUtils.buildInfoDialog("Erreur","Un compte avec ce numéro de téléphone existe déjà",getActivity());
+                    dialog.show();
+                }
             }
-            else if (s.equals("exists"))
+            else
             {
-                Dialog dialog = DialogUtils.buildInfoDialog("Erreur","Un compte avec ce numéro de téléphone existe déjà",getActivity());
-                dialog.show();
+                Toast.makeText(getActivity().getApplicationContext(), R.string.connection_failed,Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -593,6 +629,7 @@ public class MyAccountFragment extends Fragment {
                 response =QueryUtils.makeHttpPostRequest(QueryUtils.ACCOUNT_URL,params[0]);
             } catch (ConnectionProblemException e) {
                 e.printStackTrace();
+                return QueryUtils.CONNECTION_PROBLEM;
             }
             return response;
         }
@@ -600,9 +637,15 @@ public class MyAccountFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             progressDialog.dismiss();
-
+                if (!s.equals(QueryUtils.CONNECTION_PROBLEM))
+                {
                 Dialog dialog = DialogUtils.buildInfoDialog("Opération terminée","Opération terminée avec succés",getActivity());
                 dialog.show();
+                }
+                else
+                {
+                    Toast.makeText(getActivity().getApplicationContext(), R.string.connection_failed,Toast.LENGTH_LONG).show();
+                }
                 //getInfo();
 
         }
