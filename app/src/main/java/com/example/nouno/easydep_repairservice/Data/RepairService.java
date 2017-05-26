@@ -99,7 +99,13 @@ public class RepairService extends Person {
         this.position = position;
     }
 
+    public String getWilaya() {
+        return wilaya;
+    }
 
+    public void setWilaya(String wilaya) {
+        this.wilaya = wilaya;
+    }
 
     public String toJson ()
     {

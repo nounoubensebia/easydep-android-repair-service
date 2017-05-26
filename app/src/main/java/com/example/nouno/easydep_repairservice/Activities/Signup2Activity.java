@@ -48,7 +48,8 @@ public class Signup2Activity extends AppCompatActivity {
                 {
                     CheckExistanceTask checkExistanceTask = new CheckExistanceTask();
                     LinkedHashMap<String,String> map = new LinkedHashMap<String, String>();
-
+                    wilayaSpinner.getSelectedItem().toString();
+                    Toast.makeText(getApplicationContext(),wilayaSpinner.getSelectedItem().toString(),Toast.LENGTH_LONG).show();
                     map.put("email",email);
                     map.put("phonenumber",phoneNumber);
                     map.put("action","verify_existance");
