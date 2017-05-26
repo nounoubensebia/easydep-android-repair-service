@@ -6,9 +6,12 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -50,6 +53,7 @@ public class EstimateActivity extends AppCompatActivity {
         final TextInputLayout priceLayout = (TextInputLayout)findViewById(R.id.estimated_cost_wrapper);
         final TextInputLayout extraInfoLayout = (TextInputLayout)findViewById(R.id.extra_info_wrapper);
         final CheckBox dontKnowCost = (CheckBox)findViewById(R.id.dont_know_cost);
+        dontKnowCost.setChecked(true);
         dontKnowCost.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -74,6 +78,30 @@ public class EstimateActivity extends AppCompatActivity {
                 }
                 String comment = extraInfoLayout.getEditText().getText().toString();
                 sendEstimate(price,comment);
+            }
+        });
+        EditText priceText = priceLayout.getEditText();
+        priceText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().isEmpty())
+                {
+                    dontKnowCost.setChecked(true);
+                }
+                else
+                {
+                    dontKnowCost.setChecked(false);
+                }
             }
         });
     }

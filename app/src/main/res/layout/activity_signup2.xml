@@ -68,6 +68,26 @@
                 android:textColorHint="@android:color/white" />
 
         </android.support.design.widget.TextInputLayout>
+        <LinearLayout
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="16dp"
+            android:text="Wilaya"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_marginTop="8dp"
+                android:spinnerMode="dialog"
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></Spinner>
+        </LinearLayout>
     </LinearLayout>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

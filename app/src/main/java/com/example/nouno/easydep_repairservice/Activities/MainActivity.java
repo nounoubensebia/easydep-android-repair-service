@@ -94,7 +94,10 @@ public class MainActivity extends AppCompatActivity {
         else
         {
             selectedMenu=0;
+            BottomNavigationView navigationView = (BottomNavigationView)findViewById(R.id.navigation);
+            navigationView.setSelectedItemId(R.id.navigation_my_account);
             loadMyAccountFragment();
+
         }
 
         String token = FirebaseInstanceId.getInstance().getToken();

@@ -108,7 +108,11 @@ public class Signup4Activity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = sharedPref.edit();
 
+            editor.putString("repairService",repairService.toJson());
+            editor.commit();
 
 
     }
@@ -117,6 +121,7 @@ public class Signup4Activity extends AppCompatActivity {
     private void startMainActivity()
     {
         Intent i = new Intent(this,MainActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("repairService",repairService.toJson());

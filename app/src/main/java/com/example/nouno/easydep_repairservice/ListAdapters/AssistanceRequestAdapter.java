@@ -42,7 +42,12 @@ public class AssistanceRequestAdapter extends ArrayAdapter<AssistanceRequest> {
         departureText.setText(assistanceRequest.getUserPositon().getLocationName());
         if (assistanceRequest.getDestination()==null)
         {
-            destinationLayout.setVisibility(View.GONE);
+            destinationLayout.setVisibility(View.VISIBLE);
+            TextView pathText = (TextView)item.findViewById(R.id.path_text);
+            pathText.setText("Durée inconnue");
+            TextView destinationText = (TextView)item.findViewById(R.id.destination_text);
+            destinationText.setText("Non spécifiée");
+
         }
         else
         {

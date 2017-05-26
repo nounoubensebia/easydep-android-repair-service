@@ -303,6 +303,7 @@ public class LocationSearchActivity extends AppCompatActivity implements GoogleA
                 editor.apply();
                 if (extras.containsKey("password")) {
                     Intent i = new Intent(this, Signup4Activity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                     i.putExtra("repairService", repairService.toJson());
                     i.putExtra("password", extras.getString("password"));
                     startActivity(i);

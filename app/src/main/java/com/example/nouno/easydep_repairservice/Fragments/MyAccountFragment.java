@@ -603,6 +603,7 @@ public class MyAccountFragment extends Fragment {
 
                 Dialog dialog = DialogUtils.buildInfoDialog("Opération terminée","Opération terminée avec succés",getActivity());
                 dialog.show();
+                //getInfo();
 
         }
     }

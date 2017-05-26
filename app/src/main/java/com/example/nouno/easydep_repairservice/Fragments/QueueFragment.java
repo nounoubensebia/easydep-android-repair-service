@@ -64,7 +64,7 @@ public class QueueFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver,new IntentFilter("new_queue_element"));
+        //LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver,new IntentFilter("new_queue_element"));
     }
 
     @Override
@@ -215,10 +215,7 @@ public class QueueFragment extends Fragment {
             swipeRefreshLayout.setRefreshing(false);
 
             if (!s.equals(QueryUtils.CONNECTION_PROBLEM)) {
-
                 enter(fab);
-
-
                 queueElements = QueueElement.parseQueueJson(s);
                 if (queueElements.size() > 0) {
                     populateQueueElementList(getView(), queueElements);

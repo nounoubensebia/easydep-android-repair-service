@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:visibility="visible"
+    android:id="@+id/roota"
     tools:context="com.example.nouno.easydep_repairservice.Activities.AssistanceRequestInfoActivity">
 
     <android.support.design.widget.AppBarLayout

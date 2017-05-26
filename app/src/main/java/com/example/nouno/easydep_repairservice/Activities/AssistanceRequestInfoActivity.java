@@ -45,6 +45,7 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity implements 
     private AssistanceRequest assistanceRequest;
     private ProgressDialog progressDialog;
     private GoogleMap map;
+    private View roota;
     int flag;
     private AssistanceRequestInfoActivity assistanceRequestInfoActivity;
     @Override
@@ -57,6 +58,8 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity implements 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         retreiveData();
         hideTitleText();
+        roota = findViewById(R.id.roota);
+        roota.setVisibility(View.INVISIBLE);
         //displayData();
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -307,7 +310,9 @@ public class AssistanceRequestInfoActivity extends AppCompatActivity implements 
             try {
                 JSONObject jsonObject = new JSONObject(s);
                 assistanceRequest = AssistanceRequest.parseJson(jsonObject);
+                roota.setVisibility(View.VISIBLE);
                 displayData();
+
                 markUser();
                 progressDialog.dismiss();
             } catch (JSONException e) {

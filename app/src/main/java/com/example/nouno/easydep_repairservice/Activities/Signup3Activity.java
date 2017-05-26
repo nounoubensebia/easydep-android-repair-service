@@ -38,7 +38,8 @@ public class Signup3Activity extends AppCompatActivity {
                 String password = passwordWrapper.getEditText().getText().toString();
                 if (QueryUtils.validatePassword(password))
                 {
-                    Intent i = new Intent(getApplicationContext(),LocationSearchActivity.class);
+
+                    Intent i = new Intent(getApplicationContext(),Signup31Activity.class);
                     i.putExtra("password",password);
                     i.putExtra("repairService",repairService.toJson());
                     startActivity(i);

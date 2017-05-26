@@ -46,8 +46,8 @@ public class CreateAssistanceRequestActivity extends AppCompatActivity {
         Gson gson = new Gson();
         if (getIntent().getExtras()!=null&&getIntent().getExtras().containsKey("assistanceRequest"))
         {
-        String json = getIntent().getExtras().getString("assistanceRequest");
-        assistanceRequest = gson.fromJson(json,AssistanceRequest.class);
+            String json = getIntent().getExtras().getString("assistanceRequest");
+            assistanceRequest = gson.fromJson(json,AssistanceRequest.class);
         }
         else assistanceRequest = new AssistanceRequest();
         repairService = Utils.getLoggedRepairService(getApplicationContext());
@@ -125,7 +125,28 @@ public class CreateAssistanceRequestActivity extends AppCompatActivity {
         upImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNewQueueElement();
+                if (!QueryUtils.validateName(assistanceRequest.getCarOwner().getFirstname())||assistanceRequest.getCarOwner().getFirstname()==null)
+                {
+                    Toast.makeText(getApplicationContext(),"Nom non valide",Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    if (!QueryUtils.validateName(assistanceRequest.getCarOwner().getLastname())||assistanceRequest.getCarOwner().getLastname()==null)
+                        Toast.makeText(getApplicationContext(),"prénom non valide",Toast.LENGTH_LONG).show();
+                    else
+                    {
+                        if (assistanceRequest.getUserPositon()==null)
+                        {
+                            Toast.makeText(getApplicationContext(),"Vous devez spécifier la position de l'automobiliste",Toast.LENGTH_LONG).show();
+
+                        }
+                        else
+                        {
+                            addNewQueueElement();
+                        }
+                    }
+                }
+
             }
         });
         lastnameLayout.setOnClickListener(new View.OnClickListener() {

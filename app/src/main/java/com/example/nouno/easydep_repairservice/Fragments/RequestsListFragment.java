@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.nouno.easydep_repairservice.Activities.AssistanceRequestInfoActivity;
+import com.example.nouno.easydep_repairservice.App;
 import com.example.nouno.easydep_repairservice.Data.AssistanceRequest;
 import com.example.nouno.easydep_repairservice.Data.RepairService;
 import com.example.nouno.easydep_repairservice.ListAdapters.AssistanceRequestAdapter;
@@ -86,6 +87,7 @@ public class RequestsListFragment extends Fragment {
     }
 
     private void getAssistanceRequests() {
+        repairService=Utils.getLoggedRepairService(App.getContext());
         LinkedHashMap<String, String> map = new LinkedHashMap<>();
         map.put("action", QueryUtils.GET_REQUESTS);
         map.put("repair_service_id", repairService.getId() + "");

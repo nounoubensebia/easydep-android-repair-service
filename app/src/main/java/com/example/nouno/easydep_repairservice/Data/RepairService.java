@@ -19,6 +19,7 @@ public class RepairService extends Person {
     private String email;
     private Tokens tokens;
     private Position position;
+    private String wilaya;
     private boolean automaticLocationDetection=true;
     public static final int NO_PRICE = 99999;
     public static final String NO_PRICE_STRING = "Tarifs non communiqués";

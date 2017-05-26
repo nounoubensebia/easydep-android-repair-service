@@ -1,13 +1,17 @@
 package com.example.nouno.easydep_repairservice.Activities;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.nouno.easydep_repairservice.Data.RepairService;
+import com.example.nouno.easydep_repairservice.ListAdapters.WilayaSpinnerAdapter;
 import com.example.nouno.easydep_repairservice.QueryUtils;
 import com.example.nouno.easydep_repairservice.R;
 import com.example.nouno.easydep_repairservice.exceptions.ConnectionProblemException;
@@ -20,6 +24,7 @@ public class Signup2Activity extends AppCompatActivity {
     TextInputLayout phoneNumberWrapper;
     View progressBar;
     View fab;
+    Spinner wilayaSpinner;
     private RepairService repairService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,11 @@ public class Signup2Activity extends AppCompatActivity {
         emailWrapper = (TextInputLayout)findViewById(R.id.eamilWrapper);
         phoneNumberWrapper = (TextInputLayout)findViewById(R.id.phoneNumberWrapper);
         progressBar = findViewById(R.id.progressBar);
+        wilayaSpinner = (Spinner)findViewById(R.id.spinner);
+        String [] arr = getResources().getStringArray(R.array.wilaya);
+        WilayaSpinnerAdapter wilayaSpinnerAdapter = new WilayaSpinnerAdapter(this,arr);
+        wilayaSpinner.setAdapter(wilayaSpinnerAdapter);
+
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,6 +48,7 @@ public class Signup2Activity extends AppCompatActivity {
                 {
                     CheckExistanceTask checkExistanceTask = new CheckExistanceTask();
                     LinkedHashMap<String,String> map = new LinkedHashMap<String, String>();
+
                     map.put("email",email);
                     map.put("phonenumber",phoneNumber);
                     map.put("action","verify_existance");

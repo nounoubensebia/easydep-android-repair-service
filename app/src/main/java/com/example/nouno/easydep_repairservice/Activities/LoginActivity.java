@@ -138,6 +138,7 @@ public class LoginActivity extends AppCompatActivity {
     {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = sharedPref.edit();
+        repairService.setAutomaticLocationDetection(false);
         editor.putString("repairService",repairService.toJson());
         editor.commit();
         Intent i = new Intent(this,MainActivity.class);
