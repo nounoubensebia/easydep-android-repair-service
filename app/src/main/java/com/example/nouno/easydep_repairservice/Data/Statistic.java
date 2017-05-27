@@ -9,10 +9,10 @@ import org.json.JSONObject;
 
 public class Statistic {
     private int numberOfInterventionsThisWeek;
-    private int averageInterventionsInWeek;
+    private double averageInterventionsInWeek;
     private int totalInterventions;
 
-    public Statistic(int numberOfInterventionsThisWeek, int averageInterventionsInWeek, int totalInterventions) {
+    public Statistic(int numberOfInterventionsThisWeek, double averageInterventionsInWeek, int totalInterventions) {
         this.numberOfInterventionsThisWeek = numberOfInterventionsThisWeek;
         this.averageInterventionsInWeek = averageInterventionsInWeek;
         this.totalInterventions = totalInterventions;
@@ -24,7 +24,7 @@ public class Statistic {
         return numberOfInterventionsThisWeek;
     }
 
-    public int getAverageInterventionsInWeek() {
+    public double getAverageInterventionsInWeek() {
         return averageInterventionsInWeek;
     }
 
@@ -38,7 +38,7 @@ public class Statistic {
         try {
             JSONObject jsonObject = new JSONObject(json);
             statistic = new Statistic(jsonObject.getInt("number_of_interventions_this_week"),
-                    jsonObject.getInt("average_interventions_in_week"),jsonObject.getInt("total_interventions"));
+                    jsonObject.getDouble("average_interventions_in_week"),jsonObject.getInt("total_interventions"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

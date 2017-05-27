@@ -23,6 +23,8 @@ import com.example.nouno.easydep_repairservice.R;
 import com.example.nouno.easydep_repairservice.Utils;
 import com.example.nouno.easydep_repairservice.exceptions.ConnectionProblemException;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -73,10 +75,14 @@ public class StatisticsFragment extends Fragment {
     {
 
         TextView numberOfInterventionsThisWeekText = (TextView)view.findViewById(R.id.intervention_in_week_text);
+        NumberFormat nf;
+        String s;
+        nf = new DecimalFormat("0.#");
+        s = nf.format(statistic.getAverageInterventionsInWeek());
         TextView averageInterventionsInWeekText = (TextView)view.findViewById(R.id.average_interventions_per_week_number);
         TextView totalInterventionsText = (TextView)view.findViewById(R.id.total_interventions_number);
         numberOfInterventionsThisWeekText.setText(statistic.getNumberOfInterventionsThisWeek()+"");
-        averageInterventionsInWeekText.setText(statistic.getAverageInterventionsInWeek()+"");
+        averageInterventionsInWeekText.setText(s);
         totalInterventionsText.setText(statistic.getTotalInterventions()+"");
         if (comments.size()==0)
         {
@@ -87,8 +93,11 @@ public class StatisticsFragment extends Fragment {
         }
         else
         {
+            
+            nf = new DecimalFormat("0.#");
+            s = nf.format(Comment.getRating(comments));
             TextView ratingText = (TextView)view.findViewById(R.id.rating_text);
-            ratingText.setText(Comment.getRating(comments)+"");
+            ratingText.setText(s);
             TextView ratingNumber = (TextView)view.findViewById(R.id.rating_number);
             ratingNumber.setText(comments.size()+"");
         }
