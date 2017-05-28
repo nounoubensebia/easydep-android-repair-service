@@ -62,6 +62,12 @@ public class QueueElementAdapter extends ArrayAdapter<QueueElement> {
                 queueLyout.setVisibility(View.GONE);
                 break;
         }
+        if (queueElement.getPosition()>4)
+        {
+            positionText.setTextColor(getContext().getResources().getColor(android.R.color.holo_red_dark));
+            interventionText.setVisibility(View.GONE);positionText.setVisibility(View.VISIBLE);
+            queueLyout.setVisibility(View.GONE);
+        }
         nameText.setText(queueElement.getCarOwner().getFullName());
         locationText.setText(queueElement.getUserPositon().getLocationName());
         durationText.setText(queueElement.getDepartureDurationString());
